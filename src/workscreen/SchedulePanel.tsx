@@ -3,13 +3,15 @@ import type { Tournament } from '../tournament/types';
 import { schedule } from '../tournament/scheduler';
 import { ConflictsPanel } from '../results/ConflictsPanel';
 import { ScheduleTabs } from '../results/ScheduleTabs';
+import type { DisciplineColor } from '../results/disciplineColors';
 import { EndTimeStat } from './EndTimeStat';
 
 interface SchedulePanelProps {
   tournament: Tournament;
+  disciplineColorById?: Map<string, DisciplineColor>;
 }
 
-export function SchedulePanel({ tournament }: SchedulePanelProps) {
+export function SchedulePanel({ tournament, disciplineColorById }: SchedulePanelProps) {
   const hasEntries = tournament.disciplines.some((d) => d.entries.length > 0);
   const report = useMemo(() => schedule(tournament), [tournament]);
 
@@ -44,6 +46,7 @@ export function SchedulePanel({ tournament }: SchedulePanelProps) {
         disciplines={tournament.disciplines}
         entryById={entryById}
         matchById={matchById}
+        disciplineColorById={disciplineColorById}
         startTime={tournament.startTime}
       />
     </div>

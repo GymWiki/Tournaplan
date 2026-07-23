@@ -2,10 +2,9 @@ import type { FormatSelection } from '../wizard/formatSelection';
 import type { EntryModeFields } from '../wizard/entryFields';
 import { defaultFormatSelection } from '../wizard/formatSelection';
 import { defaultEntryModeFields } from '../wizard/entryFields';
+import type { DisciplineColor } from '../results/disciplineColors';
 
-/** The fixed set of five discipline line colors an organizer picks from. */
-export const disciplineColors = ['blue', 'red', 'yellow', 'green', 'purple'] as const;
-export type DisciplineColor = (typeof disciplineColors)[number];
+export { disciplineColors, type DisciplineColor } from '../results/disciplineColors';
 
 export interface DisciplineDraft extends FormatSelection, EntryModeFields {
   id: string;

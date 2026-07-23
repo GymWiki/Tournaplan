@@ -15,25 +15,40 @@ interface MatchRowProps {
    * since two disciplines can independently produce matches with the exact same label (e.g. two
    * round-robins both have a "Ronde 1 - wedstrijd 1"). */
   disciplineName?: string;
+  /** The discipline's veldlijn color, e.g. `border-l-discipline-blue` — a 3px accent, never a fill. */
+  colorBorderClass?: string;
   showTime?: boolean;
   showResource?: boolean;
 }
 
-export function MatchRow({ match, entryById, matchById, resourceName, startTime, fallbackLabel, disciplineName, showTime = true, showResource = true }: MatchRowProps) {
+export function MatchRow({
+  match,
+  entryById,
+  matchById,
+  resourceName,
+  startTime,
+  fallbackLabel,
+  disciplineName,
+  colorBorderClass,
+  showTime = true,
+  showResource = true,
+}: MatchRowProps) {
   const clockTime = match.startOffsetMinutes !== undefined ? toClockTime(match.startOffsetMinutes, startTime) : null;
   const timeLabel = match.startOffsetMinutes === undefined ? '—' : (clockTime ?? fallbackLabel ?? '');
 
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-2 text-sm last:border-0 [break-inside:avoid]">
+    <div
+      className={`flex items-center justify-between gap-4 border-b border-line py-2 pl-3 text-sm last:border-b-0 [break-inside:avoid] border-l-[3px] ${colorBorderClass ?? 'border-l-transparent'}`}
+    >
       <div className="flex items-baseline gap-3">
-        {showTime && <span className={`shrink-0 whitespace-nowrap text-gray-500 ${clockTime ? 'w-12 font-mono' : ''}`}>{timeLabel}</span>}
-        {disciplineName && <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">{disciplineName}</span>}
-        <span className="text-gray-400">{match.label}</span>
+        {showTime && <span className={`shrink-0 whitespace-nowrap text-ink-muted ${clockTime ? 'w-12 font-mono tabular-nums' : ''}`}>{timeLabel}</span>}
+        {disciplineName && <span className="rounded-block bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-muted">{disciplineName}</span>}
+        <span className="text-ink-muted">{match.label}</span>
       </div>
-      <div className="flex-1 text-center font-medium text-gray-900">
-        {slotLabel(match.home, entryById, matchById)} <span className="text-gray-400">vs</span> {slotLabel(match.away, entryById, matchById)}
+      <div className="flex-1 text-center font-medium text-ink">
+        {slotLabel(match.home, entryById, matchById)} <span className="text-ink-muted">vs</span> {slotLabel(match.away, entryById, matchById)}
       </div>
-      {showResource && <span className="w-24 shrink-0 text-right text-gray-500">{resourceName ?? '—'}</span>}
+      {showResource && <span className="w-24 shrink-0 text-right text-ink-muted">{resourceName ?? '—'}</span>}
     </div>
   );
 }

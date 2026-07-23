@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Discipline, DisciplineId, Entry, EntryId, Match, MatchId, Participant, Resource } from '../tournament/types';
+import type { DisciplineColor } from './disciplineColors';
 import { ScheduleByTime } from './ScheduleByTime';
 import { ScheduleByResource } from './ScheduleByResource';
 import { ScheduleByParticipant } from './ScheduleByParticipant';
@@ -14,10 +15,11 @@ interface ScheduleTabsProps {
   disciplines: Discipline[];
   entryById: Map<EntryId, Entry>;
   matchById: Map<MatchId, Match>;
+  disciplineColorById?: Map<string, DisciplineColor>;
   startTime?: Date;
 }
 
-export function ScheduleTabs({ matches, resources, participants, disciplines, entryById, matchById, startTime }: ScheduleTabsProps) {
+export function ScheduleTabs({ matches, resources, participants, disciplines, entryById, matchById, disciplineColorById, startTime }: ScheduleTabsProps) {
   const [tab, setTab] = useState<Tab>('Per veld');
   const resourceNameById = new Map(resources.map((r) => [r.id, r.name]));
   // Only tag matches with their discipline once there's more than one — a single-discipline
@@ -46,6 +48,7 @@ export function ScheduleTabs({ matches, resources, participants, disciplines, en
           matchById={matchById}
           resourceNameById={resourceNameById}
           disciplineNameById={disciplineNameById}
+          disciplineColorById={disciplineColorById}
           startTime={startTime}
         />
       )}
@@ -56,6 +59,7 @@ export function ScheduleTabs({ matches, resources, participants, disciplines, en
           entryById={entryById}
           matchById={matchById}
           disciplineNameById={disciplineNameById}
+          disciplineColorById={disciplineColorById}
           startTime={startTime}
         />
       )}
@@ -67,6 +71,7 @@ export function ScheduleTabs({ matches, resources, participants, disciplines, en
           matchById={matchById}
           resourceNameById={resourceNameById}
           disciplineNameById={disciplineNameById}
+          disciplineColorById={disciplineColorById}
           startTime={startTime}
         />
       )}

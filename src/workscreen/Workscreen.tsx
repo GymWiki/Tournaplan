@@ -19,6 +19,7 @@ export function Workscreen({ onBack, initialState }: WorkscreenProps) {
   }
 
   const { tournament } = useMemo(() => buildTournamentFromWorkscreenState(state), [state]);
+  const disciplineColorById = useMemo(() => new Map(state.disciplines.map((d) => [d.id, d.color])), [state.disciplines]);
 
   return (
     <div className="min-h-screen bg-surface">
@@ -47,7 +48,7 @@ export function Workscreen({ onBack, initialState }: WorkscreenProps) {
           <SettingsPanel state={state} onChange={onChange} />
         </div>
         <div className={`${mobileTab === 'schema' ? 'block' : 'hidden'} md:block`}>
-          <SchedulePanel tournament={tournament} />
+          <SchedulePanel tournament={tournament} disciplineColorById={disciplineColorById} />
         </div>
       </div>
     </div>

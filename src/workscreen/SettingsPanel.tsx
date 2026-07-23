@@ -1,19 +1,13 @@
 import { Plus, X } from 'lucide-react';
 import { EntryModeInput } from '../wizard/steps/EntryModeInput';
 import { StepFormat } from '../wizard/steps/StepFormat';
+import { disciplineColorSwatchClass } from '../results/disciplineColors';
 import { disciplineColors, defaultDisciplineDraft, type DisciplineDraft, type ResourceDraft, type WorkscreenState } from './types';
 
 const inputClass = 'w-full rounded-block border border-line bg-panel px-3 py-2 text-sm text-ink focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30';
 const labelClass = 'mb-1 block text-sm font-medium text-ink';
 const sectionHeadingClass = 'mb-3 font-display text-sm font-bold uppercase tracking-wide text-ink-muted';
-
-const colorSwatch: Record<string, string> = {
-  blue: 'bg-discipline-blue',
-  red: 'bg-discipline-red',
-  yellow: 'bg-discipline-yellow',
-  green: 'bg-discipline-green',
-  purple: 'bg-discipline-purple',
-};
+const colorSwatch = disciplineColorSwatchClass;
 
 interface SettingsPanelProps {
   state: WorkscreenState;

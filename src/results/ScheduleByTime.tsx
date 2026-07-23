@@ -6,9 +6,10 @@ interface ScheduleByTimeProps {
   entryById: Map<EntryId, Entry>;
   matchById: Map<MatchId, Match>;
   resourceNameById: Map<string, string>;
+  disciplineNameById: Map<string, string>;
 }
 
-export function ScheduleByTime({ matches, entryById, matchById, resourceNameById }: ScheduleByTimeProps) {
+export function ScheduleByTime({ matches, entryById, matchById, resourceNameById, disciplineNameById }: ScheduleByTimeProps) {
   const scheduled = matches
     .filter((m): m is Match & { startsAt: Date } => m.startsAt !== undefined)
     .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
@@ -20,7 +21,14 @@ export function ScheduleByTime({ matches, entryById, matchById, resourceNameById
   return (
     <div>
       {scheduled.map((match) => (
-        <MatchRow key={match.id} match={match} entryById={entryById} matchById={matchById} resourceName={resourceNameById.get(match.resourceId!)} />
+        <MatchRow
+          key={match.id}
+          match={match}
+          entryById={entryById}
+          matchById={matchById}
+          resourceName={resourceNameById.get(match.resourceId!)}
+          disciplineName={disciplineNameById.get(match.disciplineId)}
+        />
       ))}
     </div>
   );

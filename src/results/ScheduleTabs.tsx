@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Entry, EntryId, Match, MatchId, Participant, Resource } from '../tournament/types';
+import type { Discipline, DisciplineId, Entry, EntryId, Match, MatchId, Participant, Resource } from '../tournament/types';
 import { ScheduleByTime } from './ScheduleByTime';
 import { ScheduleByResource } from './ScheduleByResource';
 import { ScheduleByParticipant } from './ScheduleByParticipant';
@@ -11,13 +11,17 @@ interface ScheduleTabsProps {
   matches: Match[];
   resources: Resource[];
   participants: Participant[];
+  disciplines: Discipline[];
   entryById: Map<EntryId, Entry>;
   matchById: Map<MatchId, Match>;
 }
 
-export function ScheduleTabs({ matches, resources, participants, entryById, matchById }: ScheduleTabsProps) {
+export function ScheduleTabs({ matches, resources, participants, disciplines, entryById, matchById }: ScheduleTabsProps) {
   const [tab, setTab] = useState<Tab>('Per tijd');
   const resourceNameById = new Map(resources.map((r) => [r.id, r.name]));
+  // Only tag matches with their discipline once there's more than one — a single-discipline
+  // schedule already makes that clear from the page heading.
+  const disciplineNameById = new Map<DisciplineId, string>(disciplines.length > 1 ? disciplines.map((d) => [d.id, d.name]) : []);
 
   return (
     <div>
@@ -34,10 +38,21 @@ export function ScheduleTabs({ matches, resources, participants, entryById, matc
         ))}
       </div>
 
-      {tab === 'Per tijd' && <ScheduleByTime matches={matches} entryById={entryById} matchById={matchById} resourceNameById={resourceNameById} />}
-      {tab === 'Per veld' && <ScheduleByResource matches={matches} resources={resources} entryById={entryById} matchById={matchById} />}
+      {tab === 'Per tijd' && (
+        <ScheduleByTime matches={matches} entryById={entryById} matchById={matchById} resourceNameById={resourceNameById} disciplineNameById={disciplineNameById} />
+      )}
+      {tab === 'Per veld' && (
+        <ScheduleByResource matches={matches} resources={resources} entryById={entryById} matchById={matchById} disciplineNameById={disciplineNameById} />
+      )}
       {tab === 'Per deelnemer' && (
-        <ScheduleByParticipant matches={matches} participants={participants} entryById={entryById} matchById={matchById} resourceNameById={resourceNameById} />
+        <ScheduleByParticipant
+          matches={matches}
+          participants={participants}
+          entryById={entryById}
+          matchById={matchById}
+          resourceNameById={resourceNameById}
+          disciplineNameById={disciplineNameById}
+        />
       )}
     </div>
   );

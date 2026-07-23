@@ -8,9 +8,10 @@ interface ScheduleByParticipantProps {
   entryById: Map<EntryId, Entry>;
   matchById: Map<MatchId, Match>;
   resourceNameById: Map<ResourceId, string>;
+  disciplineNameById: Map<string, string>;
 }
 
-export function ScheduleByParticipant({ matches, participants, entryById, matchById, resourceNameById }: ScheduleByParticipantProps) {
+export function ScheduleByParticipant({ matches, participants, entryById, matchById, resourceNameById, disciplineNameById }: ScheduleByParticipantProps) {
   const scheduled = matches.filter((m) => m.startsAt !== undefined);
 
   const byParticipant = new Map<string, Match[]>();
@@ -41,6 +42,7 @@ export function ScheduleByParticipant({ matches, participants, entryById, matchB
                 entryById={entryById}
                 matchById={matchById}
                 resourceName={match.resourceId ? resourceNameById.get(match.resourceId) : undefined}
+                disciplineName={disciplineNameById.get(match.disciplineId)}
               />
             ))}
           </div>

@@ -1,11 +1,17 @@
 import type { AvailableFormatName } from '../../tournament/formats/registry';
+import type { FormatSelection } from '../formatSelection';
 import { formatLabels } from '../formatLabels';
-import type { StepProps } from './StepProps';
 
 const inputClass = 'w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none';
 const labelClass = 'block text-sm font-medium text-gray-700 mb-1';
 
-export function StepFormat({ draft, update }: StepProps) {
+interface StepFormatProps {
+  draft: FormatSelection;
+  update: (patch: Partial<FormatSelection>) => void;
+}
+
+/** Reused by both the "new tournament" wizard and the "add discipline" flow — both drafts satisfy FormatSelection. */
+export function StepFormat({ draft, update }: StepFormatProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-gray-900">Vorm</h2>

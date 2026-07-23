@@ -6,9 +6,10 @@ interface ScheduleByResourceProps {
   resources: Resource[];
   entryById: Map<EntryId, Entry>;
   matchById: Map<MatchId, Match>;
+  disciplineNameById: Map<string, string>;
 }
 
-export function ScheduleByResource({ matches, resources, entryById, matchById }: ScheduleByResourceProps) {
+export function ScheduleByResource({ matches, resources, entryById, matchById, disciplineNameById }: ScheduleByResourceProps) {
   const scheduled = matches.filter((m) => m.startsAt !== undefined && m.resourceId !== undefined);
 
   if (scheduled.length === 0) {
@@ -24,7 +25,14 @@ export function ScheduleByResource({ matches, resources, entryById, matchById }:
           <div key={resource.id}>
             <h3 className="mb-1 text-sm font-semibold text-gray-900">{resource.name}</h3>
             {forResource.map((match) => (
-              <MatchRow key={match.id} match={match} entryById={entryById} matchById={matchById} showResource={false} />
+              <MatchRow
+                key={match.id}
+                match={match}
+                entryById={entryById}
+                matchById={matchById}
+                showResource={false}
+                disciplineName={disciplineNameById.get(match.disciplineId)}
+              />
             ))}
           </div>
         );

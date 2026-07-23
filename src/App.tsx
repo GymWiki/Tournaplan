@@ -2,10 +2,11 @@ import { useState } from 'react';
 import type { Tournament } from './tournament/types';
 import { Home } from './Home';
 import { Wizard } from './wizard/Wizard';
+import { AddDisciplineWizard } from './wizard/addDiscipline/AddDisciplineWizard';
 import { Results } from './results/Results';
 import { saveTournament } from './persistence/storage';
 
-type View = { kind: 'home' } | { kind: 'wizard' } | { kind: 'results'; tournament: Tournament };
+type View = { kind: 'home' } | { kind: 'wizard' } | { kind: 'results'; tournament: Tournament } | { kind: 'addDiscipline'; tournament: Tournament };
 
 function App() {
   const [view, setView] = useState<View>({ kind: 'home' });
@@ -22,8 +23,27 @@ function App() {
     );
   }
 
+  if (view.kind === 'addDiscipline') {
+    return (
+      <AddDisciplineWizard
+        tournament={view.tournament}
+        onCancel={() => setView({ kind: 'results', tournament: view.tournament })}
+        onAdd={(tournament) => {
+          saveTournament(tournament);
+          setView({ kind: 'results', tournament });
+        }}
+      />
+    );
+  }
+
   if (view.kind === 'results') {
-    return <Results tournament={view.tournament} onBack={() => setView({ kind: 'home' })} />;
+    return (
+      <Results
+        tournament={view.tournament}
+        onBack={() => setView({ kind: 'home' })}
+        onAddDiscipline={() => setView({ kind: 'addDiscipline', tournament: view.tournament })}
+      />
+    );
   }
 
   return (

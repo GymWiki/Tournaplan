@@ -1,14 +1,9 @@
-import type { AvailableFormatName } from '../tournament/formats/registry';
+import { defaultFormatSelection, type FormatSelection } from './formatSelection';
 
-export interface WizardDraft {
+export interface WizardDraft extends FormatSelection {
   tournamentName: string;
   disciplineName: string;
-  format: AvailableFormatName;
-  includeThirdPlace: boolean;
-  numGroups: number;
-  qualifiersPerGroup: number;
   participantNamesText: string;
-  matchDurationMinutes: number;
   resourceNames: string[];
   /** <input type="datetime-local"> value, e.g. "2026-08-01T09:00". */
   windowStartLocal: string;
@@ -17,14 +12,10 @@ export interface WizardDraft {
 
 export function defaultDraft(): WizardDraft {
   return {
+    ...defaultFormatSelection(),
     tournamentName: '',
     disciplineName: '',
-    format: 'single_elimination',
-    includeThirdPlace: true,
-    numGroups: 2,
-    qualifiersPerGroup: 2,
     participantNamesText: '',
-    matchDurationMinutes: 15,
     resourceNames: ['Veld 1'],
     windowStartLocal: '',
     windowEndLocal: '',

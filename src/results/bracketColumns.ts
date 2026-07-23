@@ -6,9 +6,17 @@ export interface BracketColumn {
   matches: Match[];
 }
 
-/** Strips the trailing index off a round label ("Kwartfinale 2" -> "Kwartfinale") for a column header. */
-export function columnTitle(label: string): string {
-  return label.replace(/\s\d+$/, '');
+/**
+ * Column title from its position relative to the final, not from any one match's label — a round
+ * reduced to a single real match by byes has no " N" suffix on its label, which would otherwise be
+ * indistinguishable from a round number when reverse-engineered from label text.
+ */
+function columnTitleForPosition(indexFromStart: number, totalColumns: number): string {
+  const indexFromEnd = totalColumns - 1 - indexFromStart;
+  if (indexFromEnd === 0) return 'Finale';
+  if (indexFromEnd === 1) return 'Halve finale';
+  if (indexFromEnd === 2) return 'Kwartfinale';
+  return `Ronde ${indexFromStart + 1}`;
 }
 
 /**
@@ -21,10 +29,11 @@ export function buildBracketColumns(matches: Match[]): { columns: BracketColumn[
   const bracketMatches = matches.filter((m) => !m.label.startsWith('Poule') && m.label !== 'Troostfinale');
 
   const rounds = [...new Set(bracketMatches.map((m) => m.round))].sort((a, b) => a - b);
-  const columns: BracketColumn[] = rounds.map((round) => {
-    const roundMatches = bracketMatches.filter((m) => m.round === round);
-    return { title: columnTitle(roundMatches[0]!.label), round, matches: roundMatches };
-  });
+  const columns: BracketColumn[] = rounds.map((round, i) => ({
+    title: columnTitleForPosition(i, rounds.length),
+    round,
+    matches: bracketMatches.filter((m) => m.round === round),
+  }));
 
   return { columns, thirdPlaceMatch };
 }

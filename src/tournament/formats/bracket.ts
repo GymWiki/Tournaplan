@@ -1,9 +1,12 @@
 import type { Match, Slot } from '../types';
 
-export function roundLabel(round: number, totalRounds: number, indexInRound: number, matchesInRound: number): string {
+function columnBaseLabel(round: number, totalRounds: number): string {
   const roundFromEnd = totalRounds - round;
-  const base =
-    roundFromEnd === 0 ? 'Finale' : roundFromEnd === 1 ? 'Halve finale' : roundFromEnd === 2 ? 'Kwartfinale' : `Ronde ${round}`;
+  return roundFromEnd === 0 ? 'Finale' : roundFromEnd === 1 ? 'Halve finale' : roundFromEnd === 2 ? 'Kwartfinale' : `Ronde ${round}`;
+}
+
+export function roundLabel(round: number, totalRounds: number, indexInRound: number, matchesInRound: number): string {
+  const base = columnBaseLabel(round, totalRounds);
   return matchesInRound === 1 ? base : `${base} ${indexInRound + 1}`;
 }
 
@@ -61,6 +64,12 @@ export function buildEliminationBracket(
       });
       next.push({ kind: 'winner_of', matchId });
       createdInRound++;
+    }
+
+    if (createdInRound === 1 && matchesInRound !== 1) {
+      // Byes reduced this round to a single real match — drop the now-misleading " 1" suffix.
+      const only = matches[matches.length - 1]!;
+      only.label = columnBaseLabel(round, totalRounds);
     }
 
     if (round === totalRounds - 1 && next.length === 2 && createdInRound === matchesInRound) {

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { buildTournamentFromDraft } from '../build';
+import { formatLabels } from '../formatLabels';
 import type { StepProps } from './StepProps';
 
 interface StepReviewProps extends StepProps {
@@ -20,7 +21,7 @@ export function StepReview({ draft, onGenerate }: StepReviewProps) {
         <dt className="text-gray-500">Onderdeel</dt>
         <dd className="text-gray-900">{draft.disciplineName || '—'}</dd>
         <dt className="text-gray-500">Vorm</dt>
-        <dd className="text-gray-900">{draft.format}</dd>
+        <dd className="text-gray-900">{formatLabels[draft.format]}</dd>
         <dt className="text-gray-500">Deelnemers</dt>
         <dd className="text-gray-900">{entryCount}</dd>
         <dt className="text-gray-500">Velden</dt>

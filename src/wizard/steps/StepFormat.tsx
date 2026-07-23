@@ -1,14 +1,9 @@
 import type { AvailableFormatName } from '../../tournament/formats/registry';
+import { formatLabels } from '../formatLabels';
 import type { StepProps } from './StepProps';
 
 const inputClass = 'w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none';
 const labelClass = 'block text-sm font-medium text-gray-700 mb-1';
-
-const formatLabels: Record<AvailableFormatName, string> = {
-  single_elimination: 'Knock-out (single elimination)',
-  round_robin: 'Iedereen tegen iedereen (round robin)',
-  groups_knockout: 'Poules + knock-out',
-};
 
 export function StepFormat({ draft, update }: StepProps) {
   return (

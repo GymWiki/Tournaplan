@@ -1,0 +1,996 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`singleElimination.generate — snapshots > matches the stored bracket for 8 entries 1`] = `
+[
+  {
+    "away": {
+      "entryId": "e8",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e1",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p0",
+    "label": "Kwartfinale 1",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e5",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e4",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p1",
+    "label": "Kwartfinale 2",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e7",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e2",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p2",
+    "label": "Kwartfinale 3",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e6",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e3",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p3",
+    "label": "Kwartfinale 4",
+    "round": 1,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p1",
+    },
+    "dependsOn": [
+      "d1-r1-p0",
+      "d1-r1-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p0",
+    },
+    "id": "d1-r2-p0",
+    "label": "Halve finale 1",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p3",
+    },
+    "dependsOn": [
+      "d1-r1-p2",
+      "d1-r1-p3",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p2",
+    },
+    "id": "d1-r2-p1",
+    "label": "Halve finale 2",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p1",
+    },
+    "dependsOn": [
+      "d1-r2-p0",
+      "d1-r2-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p0",
+    },
+    "id": "d1-r3-p0",
+    "label": "Finale",
+    "round": 3,
+  },
+  {
+    "away": {
+      "kind": "loser_of",
+      "matchId": "d1-r2-p1",
+    },
+    "dependsOn": [
+      "d1-r2-p0",
+      "d1-r2-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "loser_of",
+      "matchId": "d1-r2-p0",
+    },
+    "id": "d1-third-place",
+    "label": "Troostfinale",
+    "round": 3,
+  },
+]
+`;
+
+exports[`singleElimination.generate — snapshots > matches the stored bracket for 16 entries 1`] = `
+[
+  {
+    "away": {
+      "entryId": "e16",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e1",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p0",
+    "label": "Ronde 1 1",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e9",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e8",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p1",
+    "label": "Ronde 1 2",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e13",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e4",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p2",
+    "label": "Ronde 1 3",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e12",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e5",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p3",
+    "label": "Ronde 1 4",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e15",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e2",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p4",
+    "label": "Ronde 1 5",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e10",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e7",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p5",
+    "label": "Ronde 1 6",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e14",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e3",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p6",
+    "label": "Ronde 1 7",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e11",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e6",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p7",
+    "label": "Ronde 1 8",
+    "round": 1,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p1",
+    },
+    "dependsOn": [
+      "d1-r1-p0",
+      "d1-r1-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p0",
+    },
+    "id": "d1-r2-p0",
+    "label": "Kwartfinale 1",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p3",
+    },
+    "dependsOn": [
+      "d1-r1-p2",
+      "d1-r1-p3",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p2",
+    },
+    "id": "d1-r2-p1",
+    "label": "Kwartfinale 2",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p5",
+    },
+    "dependsOn": [
+      "d1-r1-p4",
+      "d1-r1-p5",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p4",
+    },
+    "id": "d1-r2-p2",
+    "label": "Kwartfinale 3",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p7",
+    },
+    "dependsOn": [
+      "d1-r1-p6",
+      "d1-r1-p7",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p6",
+    },
+    "id": "d1-r2-p3",
+    "label": "Kwartfinale 4",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p1",
+    },
+    "dependsOn": [
+      "d1-r2-p0",
+      "d1-r2-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p0",
+    },
+    "id": "d1-r3-p0",
+    "label": "Halve finale 1",
+    "round": 3,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p3",
+    },
+    "dependsOn": [
+      "d1-r2-p2",
+      "d1-r2-p3",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p2",
+    },
+    "id": "d1-r3-p1",
+    "label": "Halve finale 2",
+    "round": 3,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r3-p1",
+    },
+    "dependsOn": [
+      "d1-r3-p0",
+      "d1-r3-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r3-p0",
+    },
+    "id": "d1-r4-p0",
+    "label": "Finale",
+    "round": 4,
+  },
+  {
+    "away": {
+      "kind": "loser_of",
+      "matchId": "d1-r3-p1",
+    },
+    "dependsOn": [
+      "d1-r3-p0",
+      "d1-r3-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "loser_of",
+      "matchId": "d1-r3-p0",
+    },
+    "id": "d1-third-place",
+    "label": "Troostfinale",
+    "round": 4,
+  },
+]
+`;
+
+exports[`singleElimination.generate — snapshots > matches the stored bracket for 32 entries 1`] = `
+[
+  {
+    "away": {
+      "entryId": "e32",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e1",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p0",
+    "label": "Ronde 1 1",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e17",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e16",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p1",
+    "label": "Ronde 1 2",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e25",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e8",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p2",
+    "label": "Ronde 1 3",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e24",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e9",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p3",
+    "label": "Ronde 1 4",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e29",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e4",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p4",
+    "label": "Ronde 1 5",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e20",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e13",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p5",
+    "label": "Ronde 1 6",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e28",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e5",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p6",
+    "label": "Ronde 1 7",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e21",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e12",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p7",
+    "label": "Ronde 1 8",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e31",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e2",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p8",
+    "label": "Ronde 1 9",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e18",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e15",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p9",
+    "label": "Ronde 1 10",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e26",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e7",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p10",
+    "label": "Ronde 1 11",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e23",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e10",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p11",
+    "label": "Ronde 1 12",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e30",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e3",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p12",
+    "label": "Ronde 1 13",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e19",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e14",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p13",
+    "label": "Ronde 1 14",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e27",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e6",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p14",
+    "label": "Ronde 1 15",
+    "round": 1,
+  },
+  {
+    "away": {
+      "entryId": "e22",
+      "kind": "entry",
+    },
+    "dependsOn": [],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "entryId": "e11",
+      "kind": "entry",
+    },
+    "id": "d1-r1-p15",
+    "label": "Ronde 1 16",
+    "round": 1,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p1",
+    },
+    "dependsOn": [
+      "d1-r1-p0",
+      "d1-r1-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p0",
+    },
+    "id": "d1-r2-p0",
+    "label": "Ronde 2 1",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p3",
+    },
+    "dependsOn": [
+      "d1-r1-p2",
+      "d1-r1-p3",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p2",
+    },
+    "id": "d1-r2-p1",
+    "label": "Ronde 2 2",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p5",
+    },
+    "dependsOn": [
+      "d1-r1-p4",
+      "d1-r1-p5",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p4",
+    },
+    "id": "d1-r2-p2",
+    "label": "Ronde 2 3",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p7",
+    },
+    "dependsOn": [
+      "d1-r1-p6",
+      "d1-r1-p7",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p6",
+    },
+    "id": "d1-r2-p3",
+    "label": "Ronde 2 4",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p9",
+    },
+    "dependsOn": [
+      "d1-r1-p8",
+      "d1-r1-p9",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p8",
+    },
+    "id": "d1-r2-p4",
+    "label": "Ronde 2 5",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p11",
+    },
+    "dependsOn": [
+      "d1-r1-p10",
+      "d1-r1-p11",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p10",
+    },
+    "id": "d1-r2-p5",
+    "label": "Ronde 2 6",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p13",
+    },
+    "dependsOn": [
+      "d1-r1-p12",
+      "d1-r1-p13",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p12",
+    },
+    "id": "d1-r2-p6",
+    "label": "Ronde 2 7",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p15",
+    },
+    "dependsOn": [
+      "d1-r1-p14",
+      "d1-r1-p15",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r1-p14",
+    },
+    "id": "d1-r2-p7",
+    "label": "Ronde 2 8",
+    "round": 2,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p1",
+    },
+    "dependsOn": [
+      "d1-r2-p0",
+      "d1-r2-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p0",
+    },
+    "id": "d1-r3-p0",
+    "label": "Kwartfinale 1",
+    "round": 3,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p3",
+    },
+    "dependsOn": [
+      "d1-r2-p2",
+      "d1-r2-p3",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p2",
+    },
+    "id": "d1-r3-p1",
+    "label": "Kwartfinale 2",
+    "round": 3,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p5",
+    },
+    "dependsOn": [
+      "d1-r2-p4",
+      "d1-r2-p5",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p4",
+    },
+    "id": "d1-r3-p2",
+    "label": "Kwartfinale 3",
+    "round": 3,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p7",
+    },
+    "dependsOn": [
+      "d1-r2-p6",
+      "d1-r2-p7",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r2-p6",
+    },
+    "id": "d1-r3-p3",
+    "label": "Kwartfinale 4",
+    "round": 3,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r3-p1",
+    },
+    "dependsOn": [
+      "d1-r3-p0",
+      "d1-r3-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r3-p0",
+    },
+    "id": "d1-r4-p0",
+    "label": "Halve finale 1",
+    "round": 4,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r3-p3",
+    },
+    "dependsOn": [
+      "d1-r3-p2",
+      "d1-r3-p3",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r3-p2",
+    },
+    "id": "d1-r4-p1",
+    "label": "Halve finale 2",
+    "round": 4,
+  },
+  {
+    "away": {
+      "kind": "winner_of",
+      "matchId": "d1-r4-p1",
+    },
+    "dependsOn": [
+      "d1-r4-p0",
+      "d1-r4-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "winner_of",
+      "matchId": "d1-r4-p0",
+    },
+    "id": "d1-r5-p0",
+    "label": "Finale",
+    "round": 5,
+  },
+  {
+    "away": {
+      "kind": "loser_of",
+      "matchId": "d1-r4-p1",
+    },
+    "dependsOn": [
+      "d1-r4-p0",
+      "d1-r4-p1",
+    ],
+    "disciplineId": "d1",
+    "durationMinutes": 20,
+    "home": {
+      "kind": "loser_of",
+      "matchId": "d1-r4-p0",
+    },
+    "id": "d1-third-place",
+    "label": "Troostfinale",
+    "round": 5,
+  },
+]
+`;

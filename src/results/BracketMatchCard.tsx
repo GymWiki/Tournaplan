@@ -9,7 +9,7 @@ interface BracketMatchCardProps {
 
 export function BracketMatchCard({ match, entryById, matchById }: BracketMatchCardProps) {
   return (
-    <div className="w-48 rounded-md border border-gray-200 bg-white p-2 text-xs shadow-sm">
+    <div className="w-48 rounded-md border border-gray-200 bg-white p-2 text-xs shadow-sm [break-inside:avoid]">
       <p className="mb-1 truncate text-gray-500">{match.label}</p>
       <p className="truncate font-medium text-gray-900">{slotLabel(match.home, entryById, matchById)}</p>
       <p className="truncate font-medium text-gray-900">{slotLabel(match.away, entryById, matchById)}</p>

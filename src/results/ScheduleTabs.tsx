@@ -25,7 +25,7 @@ export function ScheduleTabs({ matches, resources, participants, disciplines, en
 
   return (
     <div>
-      <div className="mb-4 flex gap-1 border-b border-gray-200">
+      <div className="no-print mb-4 flex gap-1 border-b border-gray-200">
         {tabs.map((t) => (
           <button
             key={t}

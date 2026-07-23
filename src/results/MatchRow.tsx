@@ -20,7 +20,7 @@ interface MatchRowProps {
 
 export function MatchRow({ match, entryById, matchById, resourceName, disciplineName, showTime = true, showResource = true }: MatchRowProps) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-2 text-sm last:border-0">
+    <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-2 text-sm last:border-0 [break-inside:avoid]">
       <div className="flex items-baseline gap-3">
         {showTime && <span className="w-12 shrink-0 font-mono text-gray-500">{match.startsAt ? formatTime(match.startsAt) : '—'}</span>}
         {disciplineName && <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">{disciplineName}</span>}

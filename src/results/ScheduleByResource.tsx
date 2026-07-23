@@ -1,4 +1,6 @@
 import type { Entry, EntryId, Match, MatchId, Resource } from '../tournament/types';
+import { downloadTextFile } from '../persistence/fileTransfer';
+import { buildResourceCsv } from './csvExport';
 import { MatchRow } from './MatchRow';
 
 interface ScheduleByResourceProps {
@@ -23,7 +25,16 @@ export function ScheduleByResource({ matches, resources, entryById, matchById, d
         if (forResource.length === 0) return null;
         return (
           <div key={resource.id}>
-            <h3 className="mb-1 text-sm font-semibold text-gray-900">{resource.name}</h3>
+            <div className="mb-1 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-900">{resource.name}</h3>
+              <button
+                type="button"
+                onClick={() => downloadTextFile(`${resource.name}.csv`, buildResourceCsv(matches, resource, entryById, matchById, disciplineNameById), 'text/csv')}
+                className="no-print rounded border border-gray-300 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-50"
+              >
+                CSV
+              </button>
+            </div>
             {forResource.map((match) => (
               <MatchRow
                 key={match.id}

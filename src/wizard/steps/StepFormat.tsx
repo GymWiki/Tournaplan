@@ -8,13 +8,17 @@ const labelClass = 'block text-sm font-medium text-gray-700 mb-1';
 interface StepFormatProps {
   draft: FormatSelection;
   update: (patch: Partial<FormatSelection>) => void;
+  /** The workscreen has its own standalone "Speelduur" section, so it hides this one to avoid two
+   * inputs editing the same value. */
+  showDuration?: boolean;
+  showHeading?: boolean;
 }
 
 /** Reused by both the "new tournament" wizard and the "add discipline" flow — both drafts satisfy FormatSelection. */
-export function StepFormat({ draft, update }: StepFormatProps) {
+export function StepFormat({ draft, update, showDuration = true, showHeading = true }: StepFormatProps) {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-gray-900">Vorm</h2>
+      {showHeading && <h2 className="text-lg font-semibold text-gray-900">Vorm</h2>}
       <div>
         <label className={labelClass} htmlFor="format">
           Toernooivorm
@@ -33,19 +37,21 @@ export function StepFormat({ draft, update }: StepFormatProps) {
         </select>
       </div>
 
-      <div>
-        <label className={labelClass} htmlFor="duration">
-          Wedstrijdduur (minuten)
-        </label>
-        <input
-          id="duration"
-          type="number"
-          min={1}
-          className={inputClass}
-          value={draft.matchDurationMinutes}
-          onChange={(e) => update({ matchDurationMinutes: Number(e.target.value) })}
-        />
-      </div>
+      {showDuration && (
+        <div>
+          <label className={labelClass} htmlFor="duration">
+            Wedstrijdduur (minuten)
+          </label>
+          <input
+            id="duration"
+            type="number"
+            min={1}
+            className={inputClass}
+            value={draft.matchDurationMinutes}
+            onChange={(e) => update({ matchDurationMinutes: Number(e.target.value) })}
+          />
+        </div>
+      )}
 
       {(draft.format === 'single_elimination' || draft.format === 'groups_knockout') && (
         <label className="flex items-center gap-2 text-sm text-gray-700">

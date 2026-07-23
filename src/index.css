@@ -1,5 +1,33 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-surface: #f7f8f6;
+  --color-panel: #ffffff;
+  --color-ink: #16191c;
+  --color-ink-muted: #5c6570;
+  --color-line: #dfe3e0;
+  --color-accent: #1b4d3e;
+  --color-warn: #b5541f;
+
+  /* Discipline line colors — the fixed set of five an organizer picks from. */
+  --color-discipline-blue: #2563a8;
+  --color-discipline-red: #c0392b;
+  --color-discipline-yellow: #d19a00;
+  --color-discipline-green: #3d8b4a;
+  --color-discipline-purple: #7a4b9e;
+
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-sans: 'Inter Tight', system-ui, sans-serif;
+
+  /* One radius per level, no exceptions: 6px for inputs/blocks, 10px for cards. */
+  --radius-block: 6px;
+  --radius-panel: 10px;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
 @media print {
   .no-print {
     display: none !important;

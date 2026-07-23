@@ -4,12 +4,22 @@ import { Home } from './Home';
 import { Wizard } from './wizard/Wizard';
 import { AddDisciplineWizard } from './wizard/addDiscipline/AddDisciplineWizard';
 import { Results } from './results/Results';
+import { Workscreen } from './workscreen/Workscreen';
 import { saveTournament } from './persistence/storage';
 
-type View = { kind: 'home' } | { kind: 'wizard' } | { kind: 'results'; tournament: Tournament } | { kind: 'addDiscipline'; tournament: Tournament };
+type View =
+  | { kind: 'home' }
+  | { kind: 'wizard' }
+  | { kind: 'workscreen' }
+  | { kind: 'results'; tournament: Tournament }
+  | { kind: 'addDiscipline'; tournament: Tournament };
 
 function App() {
   const [view, setView] = useState<View>({ kind: 'home' });
+
+  if (view.kind === 'workscreen') {
+    return <Workscreen onBack={() => setView({ kind: 'home' })} />;
+  }
 
   if (view.kind === 'wizard') {
     return (
@@ -52,7 +62,7 @@ function App() {
 
   return (
     <Home
-      onNew={() => setView({ kind: 'wizard' })}
+      onNew={() => setView({ kind: 'workscreen' })}
       onOpen={(tournament) => setView({ kind: 'results', tournament })}
       onImport={(tournament) => {
         saveTournament(tournament);

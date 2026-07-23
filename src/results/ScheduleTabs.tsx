@@ -4,7 +4,7 @@ import { ScheduleByTime } from './ScheduleByTime';
 import { ScheduleByResource } from './ScheduleByResource';
 import { ScheduleByParticipant } from './ScheduleByParticipant';
 
-const tabs = ['Per tijd', 'Per veld', 'Per deelnemer'] as const;
+const tabs = ['Per veld', 'Per tijd', 'Per deelnemer'] as const;
 type Tab = (typeof tabs)[number];
 
 interface ScheduleTabsProps {
@@ -18,7 +18,7 @@ interface ScheduleTabsProps {
 }
 
 export function ScheduleTabs({ matches, resources, participants, disciplines, entryById, matchById, startTime }: ScheduleTabsProps) {
-  const [tab, setTab] = useState<Tab>('Per tijd');
+  const [tab, setTab] = useState<Tab>('Per veld');
   const resourceNameById = new Map(resources.map((r) => [r.id, r.name]));
   // Only tag matches with their discipline once there's more than one — a single-discipline
   // schedule already makes that clear from the page heading.

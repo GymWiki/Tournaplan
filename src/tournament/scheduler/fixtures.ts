@@ -56,19 +56,34 @@ export function buildTournament(disciplines: Discipline[], resources: Resource[]
   };
 }
 
-/** Deterministic random tournament generator, used to fuzz-test the scheduler's hard constraints. */
+function shuffle<T>(items: T[], rng: () => number): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
+  }
+  return copy;
+}
+
+/**
+ * Deterministic random tournament generator, used to fuzz-test the scheduler's hard constraints.
+ * Up to 3 disciplines, each independently deciding whether to reuse the shared participant pool —
+ * so seeds cover every combination of two or three disciplines sharing (or not sharing) entries.
+ * Resources independently get "all disciplines" (empty), a single discipline, or a random subset,
+ * exercising the resourcesByDiscipline eligibility rules directly.
+ */
 export function randomTournament(seed: number): Tournament {
   const rng = mulberry32(seed);
   const int = (min: number, max: number) => min + Math.floor(rng() * (max - min + 1));
   const pick = <T,>(options: T[]): T => options[int(0, options.length - 1)]!;
 
-  const numDisciplines = int(1, 2);
+  const numDisciplines = int(1, 3);
   const disciplines: Discipline[] = [];
   const sharedParticipants = makeParticipants(int(4, 10), 'shared');
 
   for (let d = 0; d < numDisciplines; d++) {
     const id = `disc${d}`;
-    const useShared = d > 0 && rng() < 0.6;
+    const useShared = rng() < 0.5;
     const entryCount = useShared ? sharedParticipants.length : int(2, 20);
     const participants = useShared ? sharedParticipants : makeParticipants(entryCount, `${id}-p`);
     const entries = makeEntries(id, participants);
@@ -82,14 +97,19 @@ export function randomTournament(seed: number): Tournament {
     disciplines.push(discipline);
   }
 
-  const resourceCount = int(1, 4);
-  const shareResources = numDisciplines > 1 && rng() < 0.5;
-  const resources: Resource[] = shareResources
-    ? makeResources(
-        resourceCount,
-        disciplines.map((d) => d.id),
-      )
-    : disciplines.flatMap((d, i) => makeResources(resourceCount, [d.id], `${d.id}-r${i}-`));
+  const disciplineIds = disciplines.map((d) => d.id);
+  const resourceCount = int(1, 4) * numDisciplines;
+  const resources: Resource[] = Array.from({ length: resourceCount }, (_, i) => {
+    const r = rng();
+    const eligibleIds =
+      numDisciplines === 1 || r < 0.34
+        ? [] // all disciplines
+        : r < 0.67
+          ? [pick(disciplineIds)] // exactly one
+          : shuffle(disciplineIds, rng).slice(0, int(1, disciplineIds.length)); // random subset
+
+    return { id: `r${i + 1}`, name: `Veld ${i + 1}`, disciplineIds: eligibleIds };
+  });
 
   return buildTournament(disciplines, resources);
 }

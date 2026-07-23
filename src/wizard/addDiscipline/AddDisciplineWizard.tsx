@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Tournament } from '../../tournament/types';
-import { parseParticipantNames } from '../draft';
 import { StepFormat } from '../steps/StepFormat';
+import { resolveEntryNames } from '../entryFields';
 import { defaultAddDisciplineDraft, type AddDisciplineDraft } from './draft';
 import { StepDisciplineName } from './steps/StepDisciplineName';
 import { StepDisciplineEntries } from './steps/StepDisciplineEntries';
@@ -21,7 +21,7 @@ function isStepValid(stepIndex: number, draft: AddDisciplineDraft): boolean {
     case 0:
       return draft.disciplineName.trim().length > 0;
     case 2:
-      return draft.selectedParticipantIds.length + parseParticipantNames(draft.newParticipantNamesText).length >= 2;
+      return resolveEntryNames(draft).length >= 2;
     default:
       return true;
   }

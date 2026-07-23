@@ -24,10 +24,12 @@ export function buildTournamentFromDraft(draft: WizardDraft): BuildResult {
     seed: i + 1,
   }));
 
+  // disciplineIds: [] means "usable by every discipline" — the default, so a field created for
+  // the first discipline is automatically available if a second one is added later.
   const resources: Resource[] = draft.resourceNames
     .map((name) => name.trim())
     .filter((name) => name.length > 0)
-    .map((name) => ({ id: crypto.randomUUID(), name, disciplineIds: [disciplineId] }));
+    .map((name) => ({ id: crypto.randomUUID(), name, disciplineIds: [] }));
 
   const { formatConfig, validation, matches } = buildMatches(draft, entries);
 

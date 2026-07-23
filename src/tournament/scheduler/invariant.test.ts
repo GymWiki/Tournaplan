@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import type { Match, Resource, Tournament } from '../types';
+import type { Match, Tournament } from '../types';
 import { schedule } from './index';
 import { randomTournament } from './fixtures';
 import { matchParticipants } from './participants';
+import { resourcesByDiscipline } from './resourceEligibility';
 
 function overlaps(aStart: number, aEnd: number, bStart: number, bEnd: number): boolean {
   return aStart < bEnd && bStart < aEnd;
@@ -12,12 +13,7 @@ function checkHardConstraints(tournament: Tournament) {
   const report = schedule(tournament);
   const scheduled = report.matches.filter((m) => m.resourceId !== undefined && m.startOffsetMinutes !== undefined);
   const entryById = new Map(tournament.disciplines.flatMap((d) => d.entries).map((e) => [e.id, e]));
-  const resourcesByDiscipline = new Map<string, Resource[]>();
-  for (const r of tournament.resources) {
-    for (const discId of r.disciplineIds) {
-      resourcesByDiscipline.set(discId, [...(resourcesByDiscipline.get(discId) ?? []), r]);
-    }
-  }
+  const eligibleResources = resourcesByDiscipline(tournament.disciplines, tournament.resources);
   const byId = new Map(report.matches.map((m) => [m.id, m]));
 
   const byResource = new Map<string, Match[]>();
@@ -27,7 +23,7 @@ function checkHardConstraints(tournament: Tournament) {
     const start = m.startOffsetMinutes!;
 
     // Constraint 5: resource must be eligible for this discipline.
-    const eligible = resourcesByDiscipline.get(m.disciplineId) ?? [];
+    const eligible = eligibleResources.get(m.disciplineId) ?? [];
     expect(eligible.some((r) => r.id === m.resourceId)).toBe(true);
 
     // Constraint 3: dependencies must already have finished.

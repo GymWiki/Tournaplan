@@ -58,6 +58,7 @@ describe('buildTournamentFromDraft', () => {
     draft.resourceNames = ['Veld 1', '  ', 'Veld 2', ''];
     const { tournament } = buildTournamentFromDraft(draft);
     expect(tournament.resources.map((r) => r.name)).toEqual(['Veld 1', 'Veld 2']);
-    expect(tournament.resources.every((r) => r.disciplineIds.includes(tournament.disciplines[0]!.id))).toBe(true);
+    // Empty disciplineIds means "usable by every discipline" — the default.
+    expect(tournament.resources.every((r) => r.disciplineIds.length === 0)).toBe(true);
   });
 });

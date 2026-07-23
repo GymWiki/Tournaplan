@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { Tournament } from '../tournament/types';
-import { defaultDraft, parseParticipantNames, type WizardDraft } from './draft';
+import { defaultDraft, type WizardDraft } from './draft';
 import { buildTournamentFromDraft } from './build';
+import { resolveEntryNames } from './entryFields';
 import { stepNameIsValid } from './validation';
 import { StepName } from './steps/StepName';
 import { StepFormat } from './steps/StepFormat';
@@ -21,7 +22,7 @@ function isStepValid(stepIndex: number, draft: WizardDraft): boolean {
     case 0:
       return stepNameIsValid(draft);
     case 2:
-      return parseParticipantNames(draft.participantNamesText).length >= 2;
+      return resolveEntryNames(draft).length >= 2;
     default:
       return true;
   }

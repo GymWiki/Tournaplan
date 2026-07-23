@@ -6,6 +6,7 @@ function draftWithParticipants(n: number) {
   const draft = defaultDraft();
   draft.tournamentName = 'Zomertoernooi';
   draft.disciplineName = 'Voetbal';
+  draft.entryMode = 'names';
   draft.participantNamesText = Array.from({ length: n }, (_, i) => `Team ${i + 1}`).join('\n');
   return draft;
 }
@@ -15,6 +16,15 @@ describe('buildTournamentFromDraft', () => {
     const { tournament } = buildTournamentFromDraft(draftWithParticipants(4));
     expect(tournament.participants).toHaveLength(4);
     expect(tournament.disciplines[0]!.entries).toHaveLength(4);
+  });
+
+  it('builds count-based "Team N" entries in count mode (the default)', () => {
+    const draft = defaultDraft();
+    draft.tournamentName = 'Zomertoernooi';
+    draft.disciplineName = 'Voetbal';
+    draft.entryCount = 6;
+    const { tournament } = buildTournamentFromDraft(draft);
+    expect(tournament.participants.map((p) => p.name)).toEqual(['Team 1', 'Team 2', 'Team 3', 'Team 4', 'Team 5', 'Team 6']);
   });
 
   it('generates matches for a valid single-elimination draft', () => {

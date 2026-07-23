@@ -8,6 +8,7 @@ function baseTournament() {
   const draft = defaultDraft();
   draft.tournamentName = 'Sportdag';
   draft.disciplineName = 'Voetbal';
+  draft.entryMode = 'names';
   draft.participantNamesText = Array.from({ length: 4 }, (_, i) => `Team ${i + 1}`).join('\n');
   draft.resourceNames = ['Veld 1'];
   return buildTournamentFromDraft(draft).tournament;

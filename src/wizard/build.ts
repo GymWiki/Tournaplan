@@ -1,7 +1,7 @@
 import type { Discipline, Entry, Participant, Resource, Tournament, ValidationResult } from '../tournament/types';
 import { buildMatches } from './formatSelection';
 import type { WizardDraft } from './draft';
-import { parseParticipantNames } from './draft';
+import { resolveEntryNames } from './entryFields';
 
 export interface BuildResult {
   tournament: Tournament;
@@ -12,7 +12,7 @@ export interface BuildResult {
 export function buildTournamentFromDraft(draft: WizardDraft): BuildResult {
   const disciplineId = crypto.randomUUID();
 
-  const participants: Participant[] = parseParticipantNames(draft.participantNamesText).map((name) => ({
+  const participants: Participant[] = resolveEntryNames(draft).map((name) => ({
     id: crypto.randomUUID(),
     name,
   }));

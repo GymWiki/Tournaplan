@@ -1,25 +1,20 @@
 import { defaultFormatSelection, type FormatSelection } from './formatSelection';
+import { defaultEntryModeFields, type EntryModeFields } from './entryFields';
 
-export interface WizardDraft extends FormatSelection {
+export interface WizardDraft extends FormatSelection, EntryModeFields {
   tournamentName: string;
   disciplineName: string;
-  participantNamesText: string;
   resourceNames: string[];
 }
 
 export function defaultDraft(): WizardDraft {
   return {
     ...defaultFormatSelection(),
+    ...defaultEntryModeFields(),
     tournamentName: '',
     disciplineName: '',
-    participantNamesText: '',
     resourceNames: ['Veld 1'],
   };
 }
 
-export function parseParticipantNames(text: string): string[] {
-  return text
-    .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0);
-}
+export { parseParticipantNames } from './entryNames';

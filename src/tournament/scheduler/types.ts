@@ -17,16 +17,16 @@ export interface ScheduleOptions {
 export interface SchedulingReport {
   /**
    * Every input match, in original order. Matches that could be placed carry resourceId and
-   * startsAt; matches listed in `conflicts` keep those fields undefined.
+   * startOffsetMinutes; matches listed in `conflicts` keep those fields undefined.
    */
   matches: Match[];
   conflicts: SchedulingConflict[];
   /** Soft-constraint penalty score across the whole schedule — lower is better, 0 is perfect. */
   score: number;
-  /** Fraction (0..1) of each resource's available window spent on matches. */
+  /** Total busy minutes per resource. There's no time window, so this isn't a fraction of anything. */
   resourceUtilization: Record<ResourceId, number>;
   /** Longest gap between two consecutive matches, per participant, in minutes. */
   longestWaitMinutesByParticipant: Record<ParticipantId, number>;
-  /** Latest scheduled match end across the whole tournament, or null if nothing got scheduled. */
-  endsAt: Date | null;
+  /** Offset (in minutes) at which the last match finishes, or null if nothing got scheduled. */
+  finishOffsetMinutes: number | null;
 }

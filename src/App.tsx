@@ -42,6 +42,10 @@ function App() {
         tournament={view.tournament}
         onBack={() => setView({ kind: 'home' })}
         onAddDiscipline={() => setView({ kind: 'addDiscipline', tournament: view.tournament })}
+        onTournamentUpdate={(tournament) => {
+          saveTournament(tournament);
+          setView({ kind: 'results', tournament });
+        }}
       />
     );
   }

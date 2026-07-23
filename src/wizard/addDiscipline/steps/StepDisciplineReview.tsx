@@ -27,10 +27,6 @@ export function StepDisciplineReview({ tournament, draft, onAdd }: StepDisciplin
         <dd className="text-gray-900">{newDiscipline.entries.length}</dd>
         <dt className="text-gray-500">Velden</dt>
         <dd className="text-gray-900">{newDiscipline.entries.length > 0 ? updated.resources.filter((r) => r.disciplineIds.includes(newDiscipline.id)).length : 0}</dd>
-        <dt className="text-gray-500">Tijdvenster</dt>
-        <dd className="text-gray-900">
-          {draft.windowStartLocal || '—'} t/m {draft.windowEndLocal || '—'}
-        </dd>
       </dl>
 
       {validation.errors.length > 0 && (

@@ -3,14 +3,15 @@ import type { ScheduleOptions, SchedulingReport } from './types';
 import { topologicalOrder } from './topologicalSort';
 import { placeMatches } from './placement';
 import { improveSchedule } from './improve';
-import { computeEndsAt, computeLongestWaitMinutes, computeResourceUtilization, computeScore } from './metrics';
+import { computeFinishOffsetMinutes, computeLongestWaitMinutes, computeResourceUtilization, computeScore } from './metrics';
 import { mulberry32 } from './rng';
 
 export type { ScheduleOptions, SchedulingConflict, SchedulingReport } from './types';
 
 /**
  * Schedules every match of every discipline in the tournament across the shared resources.
- * Knows nothing about sports — only matches (duration, dependsOn), resources, and time windows.
+ * Knows nothing about sports — only matches (duration, dependsOn), resources — and nothing about
+ * clock time either: everything is minute offsets from the tournament's zero point.
  */
 export function schedule(tournament: Tournament, options: ScheduleOptions = {}): SchedulingReport {
   const minRestMinutes = options.minRestMinutes ?? 15;
@@ -32,15 +33,7 @@ export function schedule(tournament: Tournament, options: ScheduleOptions = {}):
   const ordered = topologicalOrder(allMatches);
   const { scheduled, conflicts } = placeMatches(ordered, disciplineById, resourcesByDiscipline, entryById);
 
-  const improved = improveSchedule(
-    [...scheduled.values()],
-    disciplineById,
-    resourcesByDiscipline,
-    entryById,
-    minRestMinutes,
-    improvementIterations,
-    mulberry32(1),
-  );
+  const improved = improveSchedule([...scheduled.values()], resourcesByDiscipline, entryById, minRestMinutes, improvementIterations, mulberry32(1));
   const improvedById = new Map(improved.map((m) => [m.id, m]));
 
   const matches = allMatches.map((m) => improvedById.get(m.id) ?? m);
@@ -49,8 +42,8 @@ export function schedule(tournament: Tournament, options: ScheduleOptions = {}):
     matches,
     conflicts,
     score: computeScore(matches, entryById, minRestMinutes),
-    resourceUtilization: computeResourceUtilization(matches, tournament.resources, tournament.disciplines),
+    resourceUtilization: computeResourceUtilization(matches),
     longestWaitMinutesByParticipant: computeLongestWaitMinutes(matches, entryById),
-    endsAt: computeEndsAt(matches),
+    finishOffsetMinutes: computeFinishOffsetMinutes(matches),
   };
 }

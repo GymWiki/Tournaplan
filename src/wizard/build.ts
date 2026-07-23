@@ -38,10 +38,6 @@ export function buildTournamentFromDraft(draft: WizardDraft): BuildResult {
     formatConfig,
     entries,
     matches,
-    timeWindow: {
-      start: draft.windowStartLocal ? new Date(draft.windowStartLocal) : new Date(NaN),
-      end: draft.windowEndLocal ? new Date(draft.windowEndLocal) : new Date(NaN),
-    },
   };
 
   const tournament: Tournament = {

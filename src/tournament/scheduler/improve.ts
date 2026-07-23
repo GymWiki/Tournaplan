@@ -1,25 +1,22 @@
-import type { Discipline, DisciplineId, Entry, EntryId, Match, ParticipantId, Resource, ResourceId } from '../types';
+import type { DisciplineId, Entry, EntryId, Match, ParticipantId, Resource, ResourceId } from '../types';
 import { type Interval, overlaps } from './intervals';
 import { matchParticipants } from './participants';
 import { computeScore } from './metrics';
 
-function isFeasible(matches: Match[], disciplineById: Map<DisciplineId, Discipline>, entryById: Map<EntryId, Entry>): boolean {
+function isFeasible(matches: Match[], entryById: Map<EntryId, Entry>): boolean {
   const byId = new Map(matches.map((m) => [m.id, m]));
   const resourceIntervals = new Map<ResourceId, Interval[]>();
   const participantIntervals = new Map<ParticipantId, Interval[]>();
 
   for (const m of matches) {
-    if (!m.resourceId || !m.startsAt) return false;
-    const discipline = disciplineById.get(m.disciplineId);
-    if (!discipline) return false;
+    if (!m.resourceId || m.startOffsetMinutes === undefined) return false;
 
-    const start = m.startsAt.getTime();
-    const end = start + m.durationMinutes * 60_000;
-    if (start < discipline.timeWindow.start.getTime() || end > discipline.timeWindow.end.getTime()) return false;
+    const start = m.startOffsetMinutes;
+    const end = start + m.durationMinutes;
 
     for (const depId of m.dependsOn) {
       const dep = byId.get(depId);
-      if (dep?.startsAt && start < dep.startsAt.getTime() + dep.durationMinutes * 60_000) return false;
+      if (dep?.startOffsetMinutes !== undefined && start < dep.startOffsetMinutes + dep.durationMinutes) return false;
     }
 
     const rList = resourceIntervals.get(m.resourceId) ?? [];
@@ -43,7 +40,6 @@ function isFeasible(matches: Match[], disciplineById: Map<DisciplineId, Discipli
  */
 export function improveSchedule(
   scheduledMatches: Match[],
-  disciplineById: Map<DisciplineId, Discipline>,
   resourcesByDiscipline: Map<DisciplineId, Resource[]>,
   entryById: Map<EntryId, Entry>,
   minRestMinutes: number,
@@ -67,11 +63,11 @@ export function improveSchedule(
     const resourcesForB = resourcesByDiscipline.get(b.disciplineId) ?? [];
     if (!resourcesForA.some((r) => r.id === b.resourceId) || !resourcesForB.some((r) => r.id === a.resourceId)) continue;
 
-    const candidateA: Match = { ...a, resourceId: b.resourceId, startsAt: b.startsAt };
-    const candidateB: Match = { ...b, resourceId: a.resourceId, startsAt: a.startsAt };
+    const candidateA: Match = { ...a, resourceId: b.resourceId, startOffsetMinutes: b.startOffsetMinutes };
+    const candidateB: Match = { ...b, resourceId: a.resourceId, startOffsetMinutes: a.startOffsetMinutes };
     const trial = current.map((m, idx) => (idx === idxA ? candidateA : idx === idxB ? candidateB : m));
 
-    if (!isFeasible(trial, disciplineById, entryById)) continue;
+    if (!isFeasible(trial, entryById)) continue;
 
     const trialScore = computeScore(trial, entryById, minRestMinutes);
     if (trialScore < currentScore) {

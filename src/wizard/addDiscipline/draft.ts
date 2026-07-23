@@ -7,8 +7,6 @@ export interface AddDisciplineDraft extends FormatSelection {
   newParticipantNamesText: string;
   selectedResourceIds: string[];
   newResourceNames: string[];
-  windowStartLocal: string;
-  windowEndLocal: string;
 }
 
 /** Defaults to every existing participant and resource selected — the common case is the same
@@ -21,7 +19,5 @@ export function defaultAddDisciplineDraft(tournament: Tournament): AddDiscipline
     newParticipantNamesText: '',
     selectedResourceIds: tournament.resources.map((r) => r.id),
     newResourceNames: [],
-    windowStartLocal: '',
-    windowEndLocal: '',
   };
 }

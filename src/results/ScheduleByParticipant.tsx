@@ -9,10 +9,11 @@ interface ScheduleByParticipantProps {
   matchById: Map<MatchId, Match>;
   resourceNameById: Map<ResourceId, string>;
   disciplineNameById: Map<string, string>;
+  startTime?: Date;
 }
 
-export function ScheduleByParticipant({ matches, participants, entryById, matchById, resourceNameById, disciplineNameById }: ScheduleByParticipantProps) {
-  const scheduled = matches.filter((m) => m.startsAt !== undefined);
+export function ScheduleByParticipant({ matches, participants, entryById, matchById, resourceNameById, disciplineNameById, startTime }: ScheduleByParticipantProps) {
+  const scheduled = matches.filter((m) => m.startOffsetMinutes !== undefined);
 
   const byParticipant = new Map<string, Match[]>();
   for (const match of scheduled) {
@@ -31,11 +32,11 @@ export function ScheduleByParticipant({ matches, participants, entryById, matchB
   return (
     <div className="space-y-6">
       {participantsWithMatches.map((participant) => {
-        const list = byParticipant.get(participant.id)!.sort((a, b) => a.startsAt!.getTime() - b.startsAt!.getTime());
+        const list = byParticipant.get(participant.id)!.sort((a, b) => a.startOffsetMinutes! - b.startOffsetMinutes!);
         return (
           <div key={participant.id}>
             <h3 className="mb-1 text-sm font-semibold text-gray-900">{participant.name}</h3>
-            {list.map((match) => (
+            {list.map((match, index) => (
               <MatchRow
                 key={match.id}
                 match={match}
@@ -43,6 +44,8 @@ export function ScheduleByParticipant({ matches, participants, entryById, matchB
                 matchById={matchById}
                 resourceName={match.resourceId ? resourceNameById.get(match.resourceId) : undefined}
                 disciplineName={disciplineNameById.get(match.disciplineId)}
+                startTime={startTime}
+                fallbackLabel={`Wedstrijd ${index + 1}`}
               />
             ))}
           </div>

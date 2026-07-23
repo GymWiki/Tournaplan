@@ -10,8 +10,6 @@ function baseTournament() {
   draft.disciplineName = 'Voetbal';
   draft.participantNamesText = Array.from({ length: 4 }, (_, i) => `Team ${i + 1}`).join('\n');
   draft.resourceNames = ['Veld 1'];
-  draft.windowStartLocal = '2026-08-01T09:00';
-  draft.windowEndLocal = '2026-08-01T18:00';
   return buildTournamentFromDraft(draft).tournament;
 }
 
@@ -20,8 +18,6 @@ describe('buildTournamentWithNewDiscipline', () => {
     const tournament = baseTournament();
     const draft = defaultAddDisciplineDraft(tournament);
     draft.disciplineName = 'Volleybal';
-    draft.windowStartLocal = '2026-08-01T09:00';
-    draft.windowEndLocal = '2026-08-01T18:00';
 
     const { tournament: updated, validation } = buildTournamentWithNewDiscipline(tournament, draft);
 
@@ -35,8 +31,6 @@ describe('buildTournamentWithNewDiscipline', () => {
     const tournament = baseTournament();
     const draft = defaultAddDisciplineDraft(tournament); // defaults to all participants selected
     draft.disciplineName = 'Volleybal';
-    draft.windowStartLocal = '2026-08-01T09:00';
-    draft.windowEndLocal = '2026-08-01T18:00';
 
     const { tournament: updated } = buildTournamentWithNewDiscipline(tournament, draft);
 
@@ -51,8 +45,6 @@ describe('buildTournamentWithNewDiscipline', () => {
     draft.disciplineName = 'Volleybal';
     draft.selectedParticipantIds = [tournament.participants[0]!.id];
     draft.newParticipantNamesText = 'Team 5\nTeam 6';
-    draft.windowStartLocal = '2026-08-01T09:00';
-    draft.windowEndLocal = '2026-08-01T18:00';
 
     const { tournament: updated } = buildTournamentWithNewDiscipline(tournament, draft);
 
@@ -64,8 +56,6 @@ describe('buildTournamentWithNewDiscipline', () => {
     const tournament = baseTournament();
     const draft = defaultAddDisciplineDraft(tournament); // defaults to the existing resource selected
     draft.disciplineName = 'Volleybal';
-    draft.windowStartLocal = '2026-08-01T09:00';
-    draft.windowEndLocal = '2026-08-01T18:00';
 
     const { tournament: updated } = buildTournamentWithNewDiscipline(tournament, draft);
 
@@ -79,8 +69,6 @@ describe('buildTournamentWithNewDiscipline', () => {
     draft.disciplineName = 'Volleybal';
     draft.selectedResourceIds = [];
     draft.newResourceNames = ['Zaal 1'];
-    draft.windowStartLocal = '2026-08-01T09:00';
-    draft.windowEndLocal = '2026-08-01T18:00';
 
     const { tournament: updated } = buildTournamentWithNewDiscipline(tournament, draft);
 

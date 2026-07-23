@@ -14,9 +14,10 @@ interface ScheduleTabsProps {
   disciplines: Discipline[];
   entryById: Map<EntryId, Entry>;
   matchById: Map<MatchId, Match>;
+  startTime?: Date;
 }
 
-export function ScheduleTabs({ matches, resources, participants, disciplines, entryById, matchById }: ScheduleTabsProps) {
+export function ScheduleTabs({ matches, resources, participants, disciplines, entryById, matchById, startTime }: ScheduleTabsProps) {
   const [tab, setTab] = useState<Tab>('Per tijd');
   const resourceNameById = new Map(resources.map((r) => [r.id, r.name]));
   // Only tag matches with their discipline once there's more than one — a single-discipline
@@ -39,10 +40,24 @@ export function ScheduleTabs({ matches, resources, participants, disciplines, en
       </div>
 
       {tab === 'Per tijd' && (
-        <ScheduleByTime matches={matches} entryById={entryById} matchById={matchById} resourceNameById={resourceNameById} disciplineNameById={disciplineNameById} />
+        <ScheduleByTime
+          matches={matches}
+          entryById={entryById}
+          matchById={matchById}
+          resourceNameById={resourceNameById}
+          disciplineNameById={disciplineNameById}
+          startTime={startTime}
+        />
       )}
       {tab === 'Per veld' && (
-        <ScheduleByResource matches={matches} resources={resources} entryById={entryById} matchById={matchById} disciplineNameById={disciplineNameById} />
+        <ScheduleByResource
+          matches={matches}
+          resources={resources}
+          entryById={entryById}
+          matchById={matchById}
+          disciplineNameById={disciplineNameById}
+          startTime={startTime}
+        />
       )}
       {tab === 'Per deelnemer' && (
         <ScheduleByParticipant
@@ -52,6 +67,7 @@ export function ScheduleTabs({ matches, resources, participants, disciplines, en
           matchById={matchById}
           resourceNameById={resourceNameById}
           disciplineNameById={disciplineNameById}
+          startTime={startTime}
         />
       )}
     </div>

@@ -34,12 +34,7 @@ const matchSchema = z.object({
   durationMinutes: z.number().positive(),
   dependsOn: z.array(z.string()),
   resourceId: z.string().optional(),
-  startsAt: z.coerce.date().optional(),
-});
-
-const timeWindowSchema = z.object({
-  start: z.coerce.date(),
-  end: z.coerce.date(),
+  startOffsetMinutes: z.number().optional(),
 });
 
 const formatConfigSchema = z.object({ durationMinutes: z.number().positive() }).catchall(z.unknown());
@@ -53,7 +48,6 @@ const disciplineSchema = z.object({
   formatConfig: formatConfigSchema,
   entries: z.array(entrySchema),
   matches: z.array(matchSchema),
-  timeWindow: timeWindowSchema,
 });
 
 export const tournamentSchema = z.object({
@@ -62,6 +56,7 @@ export const tournamentSchema = z.object({
   participants: z.array(participantSchema),
   disciplines: z.array(disciplineSchema),
   resources: z.array(resourceSchema),
+  startTime: z.coerce.date().optional(),
 });
 
 export type ParsedTournament = z.infer<typeof tournamentSchema>;

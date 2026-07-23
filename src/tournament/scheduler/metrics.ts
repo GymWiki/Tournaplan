@@ -1,10 +1,10 @@
-import type { Discipline, Entry, EntryId, Match, ParticipantId, Resource, ResourceId } from '../types';
+import type { Entry, EntryId, Match, ParticipantId, ResourceId } from '../types';
 import { matchParticipants } from './participants';
 
 function scheduledMatchesByParticipant(matches: Match[], entryById: Map<EntryId, Entry>): Map<ParticipantId, Match[]> {
   const map = new Map<ParticipantId, Match[]>();
   for (const m of matches) {
-    if (!m.startsAt) continue;
+    if (m.startOffsetMinutes === undefined) continue;
     for (const pid of matchParticipants(m, entryById)) {
       const list = map.get(pid) ?? [];
       list.push(m);
@@ -12,7 +12,7 @@ function scheduledMatchesByParticipant(matches: Match[], entryById: Map<EntryId,
     }
   }
   for (const list of map.values()) {
-    list.sort((a, b) => a.startsAt!.getTime() - b.startsAt!.getTime());
+    list.sort((a, b) => a.startOffsetMinutes! - b.startOffsetMinutes!);
   }
   return map;
 }
@@ -21,9 +21,9 @@ function scheduledMatchesByParticipant(matches: Match[], entryById: Map<EntryId,
 function gapsMinutes(sorted: Match[]): number[] {
   const gaps: number[] = [];
   for (let i = 1; i < sorted.length; i++) {
-    const prevEnd = sorted[i - 1]!.startsAt!.getTime() + sorted[i - 1]!.durationMinutes * 60_000;
-    const nextStart = sorted[i]!.startsAt!.getTime();
-    gaps.push((nextStart - prevEnd) / 60_000);
+    const prevEnd = sorted[i - 1]!.startOffsetMinutes! + sorted[i - 1]!.durationMinutes;
+    const nextStart = sorted[i]!.startOffsetMinutes!;
+    gaps.push(nextStart - prevEnd);
   }
   return gaps;
 }
@@ -82,34 +82,23 @@ export function computeLongestWaitMinutes(matches: Match[], entryById: Map<Entry
   return result;
 }
 
-export function computeResourceUtilization(matches: Match[], resources: Resource[], disciplines: Discipline[]): Record<ResourceId, number> {
-  const disciplineById = new Map(disciplines.map((d) => [d.id, d]));
-  const busyMsByResource = new Map<ResourceId, number>();
-  for (const m of matches) {
-    if (!m.resourceId || !m.startsAt) continue;
-    busyMsByResource.set(m.resourceId, (busyMsByResource.get(m.resourceId) ?? 0) + m.durationMinutes * 60_000);
-  }
-
+/** Total busy minutes per resource. There's no time window anymore, so this can't be a fraction of "available" time. */
+export function computeResourceUtilization(matches: Match[]): Record<ResourceId, number> {
   const result: Record<ResourceId, number> = {};
-  for (const r of resources) {
-    const linked = r.disciplineIds.map((id) => disciplineById.get(id)).filter((d): d is Discipline => d !== undefined);
-    if (linked.length === 0) {
-      result[r.id] = 0;
-      continue;
-    }
-    const availableMs = Math.max(...linked.map((d) => d.timeWindow.end.getTime())) - Math.min(...linked.map((d) => d.timeWindow.start.getTime()));
-    const busyMs = busyMsByResource.get(r.id) ?? 0;
-    result[r.id] = availableMs > 0 ? busyMs / availableMs : 0;
+  for (const m of matches) {
+    if (!m.resourceId || m.startOffsetMinutes === undefined) continue;
+    result[m.resourceId] = (result[m.resourceId] ?? 0) + m.durationMinutes;
   }
   return result;
 }
 
-export function computeEndsAt(matches: Match[]): Date | null {
+/** Offset (in minutes) at which the last match finishes, or null if nothing got scheduled. */
+export function computeFinishOffsetMinutes(matches: Match[]): number | null {
   let latest: number | null = null;
   for (const m of matches) {
-    if (!m.startsAt) continue;
-    const end = m.startsAt.getTime() + m.durationMinutes * 60_000;
+    if (m.startOffsetMinutes === undefined) continue;
+    const end = m.startOffsetMinutes + m.durationMinutes;
     if (latest === null || end > latest) latest = end;
   }
-  return latest === null ? null : new Date(latest);
+  return latest;
 }

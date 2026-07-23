@@ -26,7 +26,10 @@ export interface Entry {
   seed?: number;
 }
 
-/** A field, court, table or ring. Shared across disciplines that list it in disciplineIds. */
+/**
+ * A field, court, table or ring. An empty disciplineIds means "usable by every discipline in the
+ * tournament" (the default); listing specific ids restricts it to just those.
+ */
 export interface Resource {
   id: ResourceId;
   name: string;
@@ -56,12 +59,12 @@ export interface Match {
   /** matchIds that must be played before this one — read by the scheduler, written by the bracket engine. */
   dependsOn: MatchId[];
   resourceId?: ResourceId;
-  startsAt?: Date;
-}
-
-export interface TimeWindow {
-  start: Date;
-  end: Date;
+  /**
+   * Minutes from the tournament's zero point — never a clock time. The scheduler works entirely
+   * in relative offsets; converting to a real time (or not) is a pure display concern, see
+   * src/tournament/display/clock.ts.
+   */
+  startOffsetMinutes?: number;
 }
 
 export interface ValidationResult {
@@ -89,7 +92,6 @@ export interface Discipline {
   formatConfig: FormatConfig;
   entries: Entry[];
   matches: Match[];
-  timeWindow: TimeWindow;
 }
 
 export interface Tournament {
@@ -98,4 +100,6 @@ export interface Tournament {
   participants: Participant[];
   disciplines: Discipline[];
   resources: Resource[];
+  /** Real-world clock time for offset 0. Presentation only — the scheduler never reads this. */
+  startTime?: Date;
 }

@@ -7,12 +7,13 @@ interface ScheduleByTimeProps {
   matchById: Map<MatchId, Match>;
   resourceNameById: Map<string, string>;
   disciplineNameById: Map<string, string>;
+  startTime?: Date;
 }
 
-export function ScheduleByTime({ matches, entryById, matchById, resourceNameById, disciplineNameById }: ScheduleByTimeProps) {
+export function ScheduleByTime({ matches, entryById, matchById, resourceNameById, disciplineNameById, startTime }: ScheduleByTimeProps) {
   const scheduled = matches
-    .filter((m): m is Match & { startsAt: Date } => m.startsAt !== undefined)
-    .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+    .filter((m): m is Match & { startOffsetMinutes: number } => m.startOffsetMinutes !== undefined)
+    .sort((a, b) => a.startOffsetMinutes - b.startOffsetMinutes);
 
   if (scheduled.length === 0) {
     return <p className="text-sm text-gray-500">Nog geen wedstrijden ingepland.</p>;
@@ -28,6 +29,7 @@ export function ScheduleByTime({ matches, entryById, matchById, resourceNameById
           matchById={matchById}
           resourceName={resourceNameById.get(match.resourceId!)}
           disciplineName={disciplineNameById.get(match.disciplineId)}
+          startTime={startTime}
         />
       ))}
     </div>

@@ -7,8 +7,6 @@ function draftWithParticipants(n: number) {
   draft.tournamentName = 'Zomertoernooi';
   draft.disciplineName = 'Voetbal';
   draft.participantNamesText = Array.from({ length: n }, (_, i) => `Team ${i + 1}`).join('\n');
-  draft.windowStartLocal = '2026-08-01T09:00';
-  draft.windowEndLocal = '2026-08-01T18:00';
   return draft;
 }
 
@@ -51,12 +49,5 @@ describe('buildTournamentFromDraft', () => {
     const { tournament } = buildTournamentFromDraft(draft);
     expect(tournament.resources.map((r) => r.name)).toEqual(['Veld 1', 'Veld 2']);
     expect(tournament.resources.every((r) => r.disciplineIds.includes(tournament.disciplines[0]!.id))).toBe(true);
-  });
-
-  it('parses the datetime-local window strings into the discipline time window', () => {
-    const draft = draftWithParticipants(4);
-    const { tournament } = buildTournamentFromDraft(draft);
-    const window = tournament.disciplines[0]!.timeWindow;
-    expect(window.start.getTime()).toBeLessThan(window.end.getTime());
   });
 });

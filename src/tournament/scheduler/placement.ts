@@ -5,8 +5,7 @@ import { type Interval, overlaps } from './intervals';
 
 interface EarliestSlotArgs {
   minStart: number;
-  windowEnd: number;
-  durationMs: number;
+  durationMinutes: number;
   eligibleResources: Resource[];
   resourceBusy: Map<ResourceId, Interval[]>;
   participantBusy: Map<ParticipantId, Interval[]>;
@@ -14,13 +13,15 @@ interface EarliestSlotArgs {
 }
 
 /**
- * Earliest (start, resource) pair that respects hard constraints 1, 2, 4 and 5. Candidate start
- * times only need to be checked at the window start and at every existing busy-interval end for a
- * relevant resource or participant — feasibility can never improve between those points.
+ * Earliest (start, resource) pair that respects hard constraints 1, 2 and 5 — there's no time
+ * window anymore (constraint 4 is gone), so this always finds a slot as long as at least one
+ * resource is eligible. Candidate start times only need to be checked at minStart and at every
+ * existing busy-interval end for a relevant resource or participant — feasibility can never
+ * improve between those points. All times are minutes from the tournament's zero point.
  */
 function findEarliestSlot(args: EarliestSlotArgs): { start: number; resourceId: ResourceId } | null {
-  const { minStart, windowEnd, durationMs, eligibleResources, resourceBusy, participantBusy, participantIds } = args;
-  if (minStart + durationMs > windowEnd) return null;
+  const { minStart, durationMinutes, eligibleResources, resourceBusy, participantBusy, participantIds } = args;
+  if (eligibleResources.length === 0) return null;
 
   const candidates = new Set<number>([minStart]);
   for (const r of eligibleResources) {
@@ -34,10 +35,10 @@ function findEarliestSlot(args: EarliestSlotArgs): { start: number; resourceId: 
     }
   }
 
-  const sorted = [...candidates].filter((t) => t + durationMs <= windowEnd).sort((a, b) => a - b);
+  const sorted = [...candidates].sort((a, b) => a - b);
 
   for (const start of sorted) {
-    const end = start + durationMs;
+    const end = start + durationMinutes;
     let best: { resourceId: ResourceId; usage: number } | null = null;
 
     for (const r of eligibleResources) {
@@ -95,15 +96,15 @@ export function placeMatches(
       continue;
     }
 
-    let minStart = discipline.timeWindow.start.getTime();
+    let minStart = 0;
     let blockedByDependency = false;
     for (const depId of match.dependsOn) {
       const dep = scheduled.get(depId);
-      if (!dep || dep.startsAt === undefined) {
+      if (!dep || dep.startOffsetMinutes === undefined) {
         blockedByDependency = true;
         break;
       }
-      minStart = Math.max(minStart, dep.startsAt.getTime() + dep.durationMinutes * 60_000);
+      minStart = Math.max(minStart, dep.startOffsetMinutes + dep.durationMinutes);
     }
     if (blockedByDependency) {
       conflicts.push({
@@ -116,29 +117,25 @@ export function placeMatches(
     }
 
     const participantIds = matchParticipants(match, entryById);
-    const windowEnd = discipline.timeWindow.end.getTime();
-    const durationMs = match.durationMinutes * 60_000;
 
-    const slot = findEarliestSlot({ minStart, windowEnd, durationMs, eligibleResources, resourceBusy, participantBusy, participantIds });
+    const slot = findEarliestSlot({ minStart, durationMinutes: match.durationMinutes, eligibleResources, resourceBusy, participantBusy, participantIds });
 
     if (!slot) {
-      const shortfallMinutes = Math.ceil((minStart + durationMs - windowEnd) / 60_000);
+      // Only reachable if eligibleResources somehow all became unusable — genuinely defensive,
+      // since without a time window there's always eventually a free slot on any eligible resource.
       conflicts.push({
         matchId: match.id,
         disciplineId: discipline.id,
-        reason: `Geen vrij veld en tijdslot gevonden binnen het tijdvenster van "${discipline.name}".`,
-        suggestion:
-          shortfallMinutes > 0
-            ? `Verleng het tijdvenster met minstens ${shortfallMinutes} minuten, of voeg een extra veld toe.`
-            : `Voeg minstens één extra veld toe voor "${discipline.name}".`,
+        reason: `Geen vrij veld gevonden voor "${discipline.name}".`,
+        suggestion: 'Voeg minstens één extra veld toe voor deze discipline.',
       });
       continue;
     }
 
-    const scheduledMatch: Match = { ...match, resourceId: slot.resourceId, startsAt: new Date(slot.start) };
+    const scheduledMatch: Match = { ...match, resourceId: slot.resourceId, startOffsetMinutes: slot.start };
     scheduled.set(match.id, scheduledMatch);
 
-    const interval: Interval = { start: slot.start, end: slot.start + durationMs };
+    const interval: Interval = { start: slot.start, end: slot.start + match.durationMinutes };
     resourceBusy.set(slot.resourceId, [...(resourceBusy.get(slot.resourceId) ?? []), interval]);
     for (const pid of participantIds) {
       participantBusy.set(pid, [...(participantBusy.get(pid) ?? []), interval]);

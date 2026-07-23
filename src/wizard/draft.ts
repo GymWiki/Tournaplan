@@ -5,9 +5,6 @@ export interface WizardDraft extends FormatSelection {
   disciplineName: string;
   participantNamesText: string;
   resourceNames: string[];
-  /** <input type="datetime-local"> value, e.g. "2026-08-01T09:00". */
-  windowStartLocal: string;
-  windowEndLocal: string;
 }
 
 export function defaultDraft(): WizardDraft {
@@ -17,8 +14,6 @@ export function defaultDraft(): WizardDraft {
     disciplineName: '',
     participantNamesText: '',
     resourceNames: ['Veld 1'],
-    windowStartLocal: '',
-    windowEndLocal: '',
   };
 }
 

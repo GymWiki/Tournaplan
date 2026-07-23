@@ -28,18 +28,18 @@ function sampleTournament(): Tournament {
             durationMinutes: 20,
             dependsOn: [],
             resourceId: 'r1',
-            startsAt: new Date('2026-08-01T09:00:00Z'),
+            startOffsetMinutes: 0,
           },
         ],
-        timeWindow: { start: new Date('2026-08-01T09:00:00Z'), end: new Date('2026-08-01T18:00:00Z') },
       },
     ],
     resources: [{ id: 'r1', name: 'Veld 1', disciplineIds: ['d1'] }],
+    startTime: new Date('2026-08-01T09:00:00Z'),
   };
 }
 
 describe('tournamentToJson / parseTournamentJson', () => {
-  it('round-trips a tournament, including Date fields', () => {
+  it('round-trips a tournament, including the optional startTime Date field', () => {
     const original = sampleTournament();
     const json = tournamentToJson(original);
     const result = parseTournamentJson(json);
@@ -47,8 +47,16 @@ describe('tournamentToJson / parseTournamentJson', () => {
     expect(result.success).toBe(true);
     if (!result.success) return;
     expect(result.tournament).toEqual(original);
-    expect(result.tournament.disciplines[0]!.matches[0]!.startsAt).toBeInstanceOf(Date);
-    expect(result.tournament.disciplines[0]!.timeWindow.start).toBeInstanceOf(Date);
+    expect(result.tournament.startTime).toBeInstanceOf(Date);
+  });
+
+  it('round-trips a tournament with no startTime set', () => {
+    const original = sampleTournament();
+    delete original.startTime;
+    const result = parseTournamentJson(tournamentToJson(original));
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.tournament.startTime).toBeUndefined();
   });
 
   it('rejects invalid JSON text', () => {

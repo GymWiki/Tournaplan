@@ -6,9 +6,10 @@ interface BracketViewProps {
   matches: Match[];
   entryById: Map<EntryId, Entry>;
   matchById: Map<MatchId, Match>;
+  startTime?: Date;
 }
 
-export function BracketView({ matches, entryById, matchById }: BracketViewProps) {
+export function BracketView({ matches, entryById, matchById, startTime }: BracketViewProps) {
   const { columns, thirdPlaceMatch } = buildBracketColumns(matches);
 
   if (columns.length === 0) {
@@ -22,7 +23,7 @@ export function BracketView({ matches, entryById, matchById }: BracketViewProps)
           <div key={column.round} className="flex min-w-[12rem] flex-col justify-around gap-4">
             <h3 className="text-center text-sm font-semibold text-gray-700">{column.title}</h3>
             {column.matches.map((match) => (
-              <BracketMatchCard key={match.id} match={match} entryById={entryById} matchById={matchById} />
+              <BracketMatchCard key={match.id} match={match} entryById={entryById} matchById={matchById} startTime={startTime} />
             ))}
           </div>
         ))}
@@ -30,7 +31,7 @@ export function BracketView({ matches, entryById, matchById }: BracketViewProps)
       {thirdPlaceMatch && (
         <div className="mt-4">
           <h3 className="mb-2 text-sm font-semibold text-gray-700">Om de 3e plaats</h3>
-          <BracketMatchCard match={thirdPlaceMatch} entryById={entryById} matchById={matchById} />
+          <BracketMatchCard match={thirdPlaceMatch} entryById={entryById} matchById={matchById} startTime={startTime} />
         </div>
       )}
     </div>

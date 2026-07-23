@@ -16,7 +16,7 @@ describe('improveSchedule (via schedule)', () => {
 
 describe('improveSchedule', () => {
   it('returns the input unchanged when fewer than 2 matches are scheduled', () => {
-    const result = improveSchedule([], new Map(), new Map(), new Map(), 15, 200, () => 0.5);
+    const result = improveSchedule([], new Map(), new Map(), 15, 200, () => 0.5);
     expect(result).toEqual([]);
   });
 });

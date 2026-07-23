@@ -10,9 +10,8 @@ function overlaps(aStart: number, aEnd: number, bStart: number, bEnd: number): b
 
 function checkHardConstraints(tournament: Tournament) {
   const report = schedule(tournament);
-  const scheduled = report.matches.filter((m) => m.resourceId !== undefined && m.startsAt !== undefined);
+  const scheduled = report.matches.filter((m) => m.resourceId !== undefined && m.startOffsetMinutes !== undefined);
   const entryById = new Map(tournament.disciplines.flatMap((d) => d.entries).map((e) => [e.id, e]));
-  const disciplineById = new Map(tournament.disciplines.map((d) => [d.id, d]));
   const resourcesByDiscipline = new Map<string, Resource[]>();
   for (const r of tournament.resources) {
     for (const discId of r.disciplineIds) {
@@ -25,13 +24,7 @@ function checkHardConstraints(tournament: Tournament) {
   const byParticipant = new Map<string, Match[]>();
 
   for (const m of scheduled) {
-    const start = m.startsAt!.getTime();
-    const end = start + m.durationMinutes * 60_000;
-
-    // Constraint 4: within the discipline's time window.
-    const discipline = disciplineById.get(m.disciplineId)!;
-    expect(start).toBeGreaterThanOrEqual(discipline.timeWindow.start.getTime());
-    expect(end).toBeLessThanOrEqual(discipline.timeWindow.end.getTime());
+    const start = m.startOffsetMinutes!;
 
     // Constraint 5: resource must be eligible for this discipline.
     const eligible = resourcesByDiscipline.get(m.disciplineId) ?? [];
@@ -40,8 +33,8 @@ function checkHardConstraints(tournament: Tournament) {
     // Constraint 3: dependencies must already have finished.
     for (const depId of m.dependsOn) {
       const dep = byId.get(depId);
-      if (dep?.startsAt) {
-        expect(start).toBeGreaterThanOrEqual(dep.startsAt.getTime() + dep.durationMinutes * 60_000);
+      if (dep?.startOffsetMinutes !== undefined) {
+        expect(start).toBeGreaterThanOrEqual(dep.startOffsetMinutes + dep.durationMinutes);
       }
     }
 
@@ -59,10 +52,10 @@ function checkHardConstraints(tournament: Tournament) {
       for (let j = i + 1; j < list.length; j++) {
         const a = list[i]!;
         const b = list[j]!;
-        const aStart = a.startsAt!.getTime();
-        const aEnd = aStart + a.durationMinutes * 60_000;
-        const bStart = b.startsAt!.getTime();
-        const bEnd = bStart + b.durationMinutes * 60_000;
+        const aStart = a.startOffsetMinutes!;
+        const aEnd = aStart + a.durationMinutes;
+        const bStart = b.startOffsetMinutes!;
+        const bEnd = bStart + b.durationMinutes;
         expect(overlaps(aStart, aEnd, bStart, bEnd)).toBe(false);
       }
     }
@@ -74,10 +67,10 @@ function checkHardConstraints(tournament: Tournament) {
       for (let j = i + 1; j < list.length; j++) {
         const a = list[i]!;
         const b = list[j]!;
-        const aStart = a.startsAt!.getTime();
-        const aEnd = aStart + a.durationMinutes * 60_000;
-        const bStart = b.startsAt!.getTime();
-        const bEnd = bStart + b.durationMinutes * 60_000;
+        const aStart = a.startOffsetMinutes!;
+        const aEnd = aStart + a.durationMinutes;
+        const bStart = b.startOffsetMinutes!;
+        const bEnd = bStart + b.durationMinutes;
         expect(overlaps(aStart, aEnd, bStart, bEnd)).toBe(false);
       }
     }

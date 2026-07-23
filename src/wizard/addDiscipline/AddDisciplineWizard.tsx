@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import type { Tournament } from '../../tournament/types';
 import { parseParticipantNames } from '../draft';
-import { stepWindowIsValid } from '../validation';
 import { StepFormat } from '../steps/StepFormat';
-import { StepWindow } from '../steps/StepWindow';
 import { defaultAddDisciplineDraft, type AddDisciplineDraft } from './draft';
 import { StepDisciplineName } from './steps/StepDisciplineName';
 import { StepDisciplineEntries } from './steps/StepDisciplineEntries';
@@ -16,7 +14,7 @@ interface AddDisciplineWizardProps {
   onCancel: () => void;
 }
 
-const steps = ['Naam', 'Vorm', 'Deelnemers', 'Velden', 'Tijdvenster', 'Overzicht'] as const;
+const steps = ['Naam', 'Vorm', 'Deelnemers', 'Velden', 'Overzicht'] as const;
 
 function isStepValid(stepIndex: number, draft: AddDisciplineDraft): boolean {
   switch (stepIndex) {
@@ -24,8 +22,6 @@ function isStepValid(stepIndex: number, draft: AddDisciplineDraft): boolean {
       return draft.disciplineName.trim().length > 0;
     case 2:
       return draft.selectedParticipantIds.length + parseParticipantNames(draft.newParticipantNamesText).length >= 2;
-    case 4:
-      return stepWindowIsValid(draft);
     default:
       return true;
   }
@@ -60,8 +56,7 @@ export function AddDisciplineWizard({ tournament, onAdd, onCancel }: AddDiscipli
         {stepIndex === 1 && <StepFormat draft={draft} update={update} />}
         {stepIndex === 2 && <StepDisciplineEntries tournament={tournament} draft={draft} update={update} />}
         {stepIndex === 3 && <StepDisciplineResources tournament={tournament} draft={draft} update={update} />}
-        {stepIndex === 4 && <StepWindow draft={draft} update={update} />}
-        {stepIndex === 5 && <StepDisciplineReview tournament={tournament} draft={draft} onAdd={onAdd} />}
+        {stepIndex === 4 && <StepDisciplineReview tournament={tournament} draft={draft} onAdd={onAdd} />}
       </div>
 
       <div className="mt-4 flex justify-between">

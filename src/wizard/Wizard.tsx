@@ -2,12 +2,11 @@ import { useState } from 'react';
 import type { Tournament } from '../tournament/types';
 import { defaultDraft, parseParticipantNames, type WizardDraft } from './draft';
 import { buildTournamentFromDraft } from './build';
-import { stepNameIsValid, stepWindowIsValid } from './validation';
+import { stepNameIsValid } from './validation';
 import { StepName } from './steps/StepName';
 import { StepFormat } from './steps/StepFormat';
 import { StepEntries } from './steps/StepEntries';
 import { StepResources } from './steps/StepResources';
-import { StepWindow } from './steps/StepWindow';
 import { StepReview } from './steps/StepReview';
 
 interface WizardProps {
@@ -15,7 +14,7 @@ interface WizardProps {
   onCancel: () => void;
 }
 
-const steps = ['Naam', 'Vorm', 'Deelnemers', 'Velden', 'Tijdvenster', 'Overzicht'] as const;
+const steps = ['Naam', 'Vorm', 'Deelnemers', 'Velden', 'Overzicht'] as const;
 
 function isStepValid(stepIndex: number, draft: WizardDraft): boolean {
   switch (stepIndex) {
@@ -23,8 +22,6 @@ function isStepValid(stepIndex: number, draft: WizardDraft): boolean {
       return stepNameIsValid(draft);
     case 2:
       return parseParticipantNames(draft.participantNamesText).length >= 2;
-    case 4:
-      return stepWindowIsValid(draft);
     default:
       return true;
   }
@@ -63,8 +60,7 @@ export function Wizard({ onComplete, onCancel }: WizardProps) {
         {stepIndex === 1 && <StepFormat draft={draft} update={update} />}
         {stepIndex === 2 && <StepEntries draft={draft} update={update} />}
         {stepIndex === 3 && <StepResources draft={draft} update={update} />}
-        {stepIndex === 4 && <StepWindow draft={draft} update={update} />}
-        {stepIndex === 5 && <StepReview draft={draft} update={update} onGenerate={handleGenerate} />}
+        {stepIndex === 4 && <StepReview draft={draft} update={update} onGenerate={handleGenerate} />}
       </div>
 
       <div className="mt-4 flex justify-between">

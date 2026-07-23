@@ -26,10 +26,6 @@ export function StepReview({ draft, onGenerate }: StepReviewProps) {
         <dd className="text-gray-900">{entryCount}</dd>
         <dt className="text-gray-500">Velden</dt>
         <dd className="text-gray-900">{tournament.resources.length}</dd>
-        <dt className="text-gray-500">Tijdvenster</dt>
-        <dd className="text-gray-900">
-          {draft.windowStartLocal || '—'} t/m {draft.windowEndLocal || '—'}
-        </dd>
       </dl>
 
       {validation.errors.length > 0 && (

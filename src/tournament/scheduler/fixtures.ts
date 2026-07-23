@@ -1,7 +1,7 @@
 import { singleElimination } from '../formats/singleElimination';
 import { roundRobin } from '../formats/roundRobin';
 import { groupsKnockout } from '../formats/groupsKnockout';
-import type { Discipline, Entry, Participant, Resource, TimeWindow, Tournament, TournamentFormatName } from '../types';
+import type { Discipline, Entry, Participant, Resource, Tournament, TournamentFormatName } from '../types';
 import { mulberry32 } from './rng';
 
 export function makeParticipants(count: number, prefix = 'p'): Participant[] {
@@ -17,10 +17,6 @@ export function makeEntries(disciplineId: string, participants: Participant[]): 
   }));
 }
 
-export function makeWindow(startISO: string, endISO: string): TimeWindow {
-  return { start: new Date(startISO), end: new Date(endISO) };
-}
-
 export function makeResources(count: number, disciplineIds: string[], idPrefix = 'r'): Resource[] {
   return Array.from({ length: count }, (_, i) => ({
     id: `${idPrefix}${i + 1}`,
@@ -34,7 +30,6 @@ export function buildDiscipline(
   format: TournamentFormatName,
   entries: Entry[],
   durationMinutes: number,
-  window: TimeWindow,
   extraConfig: Record<string, unknown> = {},
 ): Discipline {
   const config = { durationMinutes, ...extraConfig };
@@ -47,7 +42,7 @@ export function buildDiscipline(
           ? groupsKnockout.generate(entries, config as { durationMinutes: number; numGroups: number })
           : [];
 
-  return { id, name: id, format, formatConfig: config, entries, matches, timeWindow: window };
+  return { id, name: id, format, formatConfig: config, entries, matches };
 }
 
 export function buildTournament(disciplines: Discipline[], resources: Resource[]): Tournament {
@@ -70,7 +65,6 @@ export function randomTournament(seed: number): Tournament {
   const numDisciplines = int(1, 2);
   const disciplines: Discipline[] = [];
   const sharedParticipants = makeParticipants(int(4, 10), 'shared');
-  const windowStart = Date.UTC(2026, 7, 1, 9, 0);
 
   for (let d = 0; d < numDisciplines; d++) {
     const id = `disc${d}`;
@@ -80,20 +74,11 @@ export function randomTournament(seed: number): Tournament {
     const entries = makeEntries(id, participants);
 
     const durationMinutes = int(10, 40);
-    const windowMinutes = int(60, 600);
-    const window = makeWindow(new Date(windowStart).toISOString(), new Date(windowStart + windowMinutes * 60_000).toISOString());
 
     const formatPool: TournamentFormatName[] = entries.length >= 4 ? ['single_elimination', 'round_robin', 'groups_knockout'] : ['single_elimination', 'round_robin'];
     const format = entries.length < 2 ? 'round_robin' : pick(formatPool);
 
-    const discipline = buildDiscipline(
-      id,
-      format,
-      entries,
-      durationMinutes,
-      window,
-      format === 'groups_knockout' ? { numGroups: 2, qualifiersPerGroup: 1 } : {},
-    );
+    const discipline = buildDiscipline(id, format, entries, durationMinutes, format === 'groups_knockout' ? { numGroups: 2, qualifiersPerGroup: 1 } : {});
     disciplines.push(discipline);
   }
 

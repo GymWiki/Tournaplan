@@ -46,10 +46,6 @@ export function buildTournamentWithNewDiscipline(tournament: Tournament, draft: 
     formatConfig,
     entries,
     matches,
-    timeWindow: {
-      start: draft.windowStartLocal ? new Date(draft.windowStartLocal) : new Date(NaN),
-      end: draft.windowEndLocal ? new Date(draft.windowEndLocal) : new Date(NaN),
-    },
   };
 
   const updatedResources = tournament.resources.map((r) =>

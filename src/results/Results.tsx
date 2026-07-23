@@ -10,13 +10,24 @@ interface ResultsProps {
   tournament: Tournament;
   onBack: () => void;
   onAddDiscipline: () => void;
+  onTournamentUpdate: (tournament: Tournament) => void;
 }
 
-export function Results({ tournament, onBack, onAddDiscipline }: ResultsProps) {
+function dateToInputValue(date: Date): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+export function Results({ tournament, onBack, onAddDiscipline, onTournamentUpdate }: ResultsProps) {
   const report = useMemo(() => schedule(tournament), [tournament]);
 
   const entryById = useMemo(() => new Map(tournament.disciplines.flatMap((d) => d.entries).map((e) => [e.id, e])), [tournament]);
   const matchById = useMemo(() => new Map(report.matches.map((m) => [m.id, m])), [report.matches]);
+
+  // Purely a display transform on top of the already-computed offsets — never triggers rescheduling.
+  function handleStartTimeChange(value: string) {
+    onTournamentUpdate({ ...tournament, startTime: value ? new Date(value) : undefined });
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -41,6 +52,24 @@ export function Results({ tournament, onBack, onAddDiscipline }: ResultsProps) {
         </div>
       </div>
 
+      <div className="no-print mb-6 flex items-center gap-2 text-sm">
+        <label htmlFor="displayStartTime" className="text-gray-600">
+          Starttijd (optioneel, alleen voor weergave):
+        </label>
+        <input
+          id="displayStartTime"
+          type="datetime-local"
+          className="rounded-md border border-gray-300 px-2 py-1 text-sm"
+          value={tournament.startTime ? dateToInputValue(tournament.startTime) : ''}
+          onChange={(e) => handleStartTimeChange(e.target.value)}
+        />
+        {tournament.startTime && (
+          <button type="button" onClick={() => handleStartTimeChange('')} className="text-gray-500 hover:underline">
+            Wissen
+          </button>
+        )}
+      </div>
+
       <ConflictsPanel conflicts={report.conflicts} matchById={matchById} />
 
       {tournament.disciplines.map((discipline) => {
@@ -50,7 +79,7 @@ export function Results({ tournament, onBack, onAddDiscipline }: ResultsProps) {
         return (
           <section key={discipline.id} className="mb-8">
             <h2 className="mb-3 text-lg font-semibold text-gray-900">Bracket — {discipline.name}</h2>
-            <BracketView matches={disciplineMatches} entryById={entryById} matchById={matchById} />
+            <BracketView matches={disciplineMatches} entryById={entryById} matchById={matchById} startTime={tournament.startTime} />
           </section>
         );
       })}
@@ -64,6 +93,7 @@ export function Results({ tournament, onBack, onAddDiscipline }: ResultsProps) {
           disciplines={tournament.disciplines}
           entryById={entryById}
           matchById={matchById}
+          startTime={tournament.startTime}
         />
       </section>
     </div>
